@@ -8,49 +8,57 @@
         <th>Manufacturer</th>
         <th>Price</th>
         <th>Color</th>
+        <th>Availability</th>
       </tr>
-      <tr v-for="(product, index) in showProductList" :key="index">
+      <tr v-for="(product, index) in getProducts(category)" :key="index">
         <td>{{ product.name }}</td>
         <td>{{ product.id }}</td>
         <td>{{ product.manufacturer }}</td>
         <td>{{ product.price }}</td>
-        <td>{{ product.color[0] }}</td>
+        <td>{{ product.color }}</td>
+        <BaseAvailability :id="product.id" :manufacturer="product.manufacturer" />
       </tr>
     </table>
   </div>
 </template>
 
 <script>
-import axios from "axios";
+import { mapGetters, mapActions } from "vuex";
+import BaseAvailability from "@/components/BaseAvailability.vue";
 
 export default {
   data() {
     return {
       loading: false,
-      productData: null
-    }
+    };
   },
   props: {
     category: {
       type: String,
       required: true,
-    }
+    },
+  },
+  components: {
+    BaseAvailability
+  },
+  watch: {
+    category() {
+      this.loadProductData();
+    },
   },
   computed: {
-    showProductList: function() {
-      return this.productData.slice(0, 99);
-    }
+    ...mapGetters(["getProducts"]),
   },
   methods: {
-    fetchProducts: async function() {
-      this.loading = true
-      const products = await axios.get("https://bad-api-assignment.reaktor.com/products/" + this.category)
-      this.productData = products.data
-      this.loading = false
-    }
+    ...mapActions(["fetchProducts"]),
+    loadProductData: async function () {
+      this.loading = true;
+      await this.fetchProducts(this.category);
+      this.loading = false;
+    },
   },
   created() {
-    this.fetchProducts();
-  }
+    this.loadProductData();
+  },
 };
 </script>
