@@ -1,8 +1,21 @@
 <template>
   <div id="app">
+    <TheNavigation />
     <router-view/>
   </div>
 </template>
+
+<script>
+import TheNavigation from '@/components/TheNavigation.vue'
+
+export default {
+  name: 'Home',
+   components: {
+    TheNavigation
+  }
+}
+</script>
+
 
 <style>
 #app {
