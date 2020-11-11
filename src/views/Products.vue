@@ -1,6 +1,6 @@
 <template>
   <div id="products">
-    <h1>{{ category }}</h1>
+    <h1>{{ category | capitalize }}</h1>
     <div v-if="!loading" class="pages">
       <label for="page">Total pages: {{ getPages(category) }}</label>
       <button @click="decrementPage(category)" type="button">Prev</button>
@@ -8,7 +8,8 @@
         id="page"
         name="page"
         type="number"
-        v-model.number="currentPage[category]"
+        v-model.number="currentPage"
+        step="1"
         min="1"
         :max="getPages(category)"
       />
@@ -23,7 +24,10 @@
         <th>Color</th>
         <th>Availability</th>
       </tr>
-      <tr v-for="(product, index) in getProducts(category, currentPage[category])" :key="index">
+      <tr
+        v-for="(product, index) in getProducts(category, currentPage)"
+        :key="index"
+      >
         <td>{{ product.name }}</td>
         <td>{{ product.id }}</td>
         <td>{{ product.manufacturer }}</td>
@@ -46,11 +50,11 @@ export default {
   data() {
     return {
       loading: false,
-      currentPage: {
+      pageProxy: {
         jackets: 1,
         shirts: 1,
-        accessories: 1
-      }
+        accessories: 1,
+      },
     };
   },
   props: {
@@ -69,6 +73,22 @@ export default {
   },
   computed: {
     ...mapGetters("products", ["getProducts", "getPages"]),
+    currentPage: {
+      get() {
+        return this.pageProxy[this.category];
+      },
+      set(page) {
+        if (page) {
+          if (page < 1) {
+            this.pageProxy[this.category] = 1;
+          } else if (page > this.getPages(this.category)) {
+            this.pageProxy[this.category] = this.getPages(this.category);
+          } else {
+            this.pageProxy[this.category] = page
+          }
+        }
+      }
+    },
   },
   methods: {
     ...mapActions("products", ["fetchProducts"]),
@@ -78,10 +98,11 @@ export default {
       this.loading = false;
     },
     incrementPage: function (category) {
-      if (this.currentPage[category] < this.getPages(this.category)) this.currentPage[category]++;
+      if (this.pageProxy[category] < this.getPages(this.category))
+        this.pageProxy[category]++;
     },
     decrementPage: function (category) {
-      if (this.currentPage[category] > 1) this.currentPage[category]--;
+      if (this.pageProxy[category] > 1) this.pageProxy[category]--;
     },
   },
   created() {

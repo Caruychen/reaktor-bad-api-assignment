@@ -10,7 +10,7 @@
         },
       }"
     >
-      {{ category }}
+      {{ category | capitalize }}
     </router-link>
   </div>
 </template>
