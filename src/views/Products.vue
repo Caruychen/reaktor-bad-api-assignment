@@ -1,6 +1,19 @@
 <template>
   <div id="products">
     <h1>{{ category }}</h1>
+    <div v-if="!loading" class="pages">
+      <label for="page">Total pages: {{ getPages(category) }}</label>
+      <button @click="decrementPage(category)" type="button">Prev</button>
+      <input
+        id="page"
+        name="page"
+        type="number"
+        v-model.number="currentPage[category]"
+        min="1"
+        :max="getPages(category)"
+      />
+      <button @click="incrementPage(category)" type="button">Next</button>
+    </div>
     <table v-if="!loading">
       <tr>
         <th>Name</th>
@@ -10,13 +23,16 @@
         <th>Color</th>
         <th>Availability</th>
       </tr>
-      <tr v-for="(product, index) in getProducts(category)" :key="index">
+      <tr v-for="(product, index) in getProducts(category, currentPage[category])" :key="index">
         <td>{{ product.name }}</td>
         <td>{{ product.id }}</td>
         <td>{{ product.manufacturer }}</td>
         <td>{{ product.price }}</td>
         <td>{{ product.color }}</td>
-        <BaseAvailability :id="product.id" :manufacturer="product.manufacturer" />
+        <BaseAvailability
+          :id="product.id"
+          :manufacturer="product.manufacturer"
+        />
       </tr>
     </table>
   </div>
@@ -30,6 +46,11 @@ export default {
   data() {
     return {
       loading: false,
+      currentPage: {
+        jackets: 1,
+        shirts: 1,
+        accessories: 1
+      }
     };
   },
   props: {
@@ -39,7 +60,7 @@ export default {
     },
   },
   components: {
-    BaseAvailability
+    BaseAvailability,
   },
   watch: {
     category() {
@@ -47,7 +68,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("products", ["getProducts"]),
+    ...mapGetters("products", ["getProducts", "getPages"]),
   },
   methods: {
     ...mapActions("products", ["fetchProducts"]),
@@ -55,6 +76,12 @@ export default {
       this.loading = true;
       await this.fetchProducts(this.category);
       this.loading = false;
+    },
+    incrementPage: function (category) {
+      if (this.currentPage[category] < this.getPages(this.category)) this.currentPage[category]++;
+    },
+    decrementPage: function (category) {
+      if (this.currentPage[category] > 1) this.currentPage[category]--;
     },
   },
   created() {
@@ -65,7 +92,7 @@ export default {
 
 <style scoped>
 #products {
-  margin: 5rem auto
+  margin: 5rem auto;
 }
 table {
   margin-left: auto;
@@ -79,13 +106,21 @@ table th {
   background-color: #444;
   color: white;
 }
-table td, table th {
+table td,
+table th {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: left;
 }
 
-table tr:nth-child(even){background-color: #f2f2f2;}
+table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
 
-table tr:hover {background-color: #ddd;}
+table tr:hover {
+  background-color: #ddd;
+}
+label {
+  display: block;
+}
 </style>

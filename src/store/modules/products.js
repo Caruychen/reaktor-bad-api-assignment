@@ -10,7 +10,9 @@ export default {
     }
   },
   getters: {
-    getProducts: (state) => category => {
+    getProducts: state => (category, page) => {
+      const minIndex = (page - 1) * 100
+      const maxIndex = page * 100 - 1;
       return state.products[category].map(item => {
         return {
           name: item.name,
@@ -19,7 +21,10 @@ export default {
           price: item.price,
           color: item.color.join(', ')
         }
-      }).slice(0, 99);
+      }).slice(minIndex, maxIndex);
+    },
+    getPages: state => category => {
+      return Math.ceil(state.products[category].length / 100);
     }
   },
   mutations: {
