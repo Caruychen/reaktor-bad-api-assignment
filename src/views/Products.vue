@@ -1,9 +1,9 @@
 <template>
   <div id="products">
     <h1>{{ category | capitalize }}</h1>
-    <div v-if="!loading" class="pages">
-      <label for="page">Total pages: {{ getPages(category) }}</label>
+    <div v-if="!loading" class="page-selector">
       <button @click="decrementPage(category)" type="button">Prev</button>
+      <label for="page">Page</label>
       <input
         id="page"
         name="page"
@@ -13,10 +13,12 @@
         min="1"
         :max="getPages(category)"
       />
+      <label for="page">of {{ getPages(category) }}</label>
       <button @click="incrementPage(category)" type="button">Next</button>
     </div>
     <table v-if="!loading">
       <tr>
+        <th>Index</th>
         <th>Name</th>
         <th>ID</th>
         <th>Manufacturer</th>
@@ -28,6 +30,7 @@
         v-for="(product, index) in getProducts(category, currentPage)"
         :key="index"
       >
+        <td>{{ index + (currentPage - 1) * 100 + 1 }}</td>
         <td>{{ product.name }}</td>
         <td>{{ product.id }}</td>
         <td>{{ product.manufacturer }}</td>
@@ -141,7 +144,20 @@ table tr:nth-child(even) {
 table tr:hover {
   background-color: #ddd;
 }
-label {
-  display: block;
+
+.page-selector {
+  margin-bottom: 1rem;
+}
+
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+  text-align: center;
+  margin: 0 5px;
+}
+button {
+  margin: 0 1rem;
 }
 </style>
