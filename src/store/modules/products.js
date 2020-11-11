@@ -1,4 +1,4 @@
-import axios from "axios";
+import { badApiHTTP } from "@/service/index.js";
 
 export default {
   namespaced: true,
@@ -30,7 +30,7 @@ export default {
   actions: {
     fetchProducts: async ({ state, commit }, category) => {
       if (!state.products[category]) {
-        const products = await axios.get("https://bad-api-assignment.reaktor.com/products/" + category);
+        const products = await badApiHTTP.get("products/" + category);
         if (products.status === 200) {
           commit("setProducts", {
             data: products.data,

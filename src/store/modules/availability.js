@@ -1,4 +1,4 @@
-import axios from "axios";
+import { badApiHTTP } from "@/service/index.js";
 
 export default {
   namespaced: true,
@@ -51,8 +51,9 @@ export default {
       return availabilityCall;
     },
     availabilityCall: async ({ state, commit }, manufacturer) => {
-      if (!state.availability[manufacturer].items) {
-        const availability = await axios.get("https://bad-api-assignment.reaktor.com/availability/" + manufacturer);
+      const items = state.availability[manufacturer].items;
+      if (!items || items.length === 0) {
+        const availability = await badApiHTTP.get("availability/" + manufacturer);
         if (availability.status === 200) {
           commit("setAvailability", {
             data: availability.data.response,
