@@ -1,22 +1,25 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home,
-    children: [
-      {
-        path: "/products/:category",
-        name: "Products",
-        props: true,
-        component: () => import(/* webpackChunkName: "products" */ '../views/Products.vue'),
-      }
-    ]
+    path: "/products/:category",
+    name: "Products",
+    props: true,
+    component: () => import(/* webpackChunkName: "products" */ '../views/Products.vue'),
+  },
+  {
+    path: "",
+    redirect: "/products/jackets"
+  },
+  {
+    path: "/404",
+    alias: "*",
+    name: "NotFound",
+    component: () =>
+      import(/* webpackChunkName: "notFound" */ "../views/NotFound.vue")
   }
 ]
 
