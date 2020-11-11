@@ -21,7 +21,7 @@ export default {
         fetchCall: null
       }
     },
-    setAvailability(state, payload) {
+    setAvailabilityData(state, payload) {
       state.availability[payload.manufacturer].items = payload.data
     },
     setAvailabilityIsFetching(state, payload) {
@@ -55,17 +55,17 @@ export default {
       if (!items || items.length <= 0) {
         const availability = await badApiHTTP.get("availability/" + manufacturer);
         if (availability.status === 200) {
-          commit("setAvailability", {
+          commit("setAvailabilityData", {
             data: availability.data.response,
             manufacturer
           })
         }
-        commit("setAvailabilityIsFetching", { manufacturer, isFetching: false });
-        commit("setAvailabilityCall", {
-          manufacturer,
-          availabilityCall: null
-        });
       }
+      commit("setAvailabilityIsFetching", { manufacturer, isFetching: false });
+      commit("setAvailabilityCall", {
+        manufacturer,
+        availabilityCall: null
+      });
       return Promise.resolve(true);
     }
   }
