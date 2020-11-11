@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="products">
     <h1>{{ category }}</h1>
     <table v-if="!loading">
       <tr>
@@ -62,3 +62,30 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+#products {
+  margin: 5rem auto
+}
+table {
+  margin-left: auto;
+  margin-right: auto;
+  border-collapse: collapse;
+}
+
+table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background-color: #444;
+  color: white;
+}
+table td, table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+table tr:nth-child(even){background-color: #f2f2f2;}
+
+table tr:hover {background-color: #ddd;}
+</style>
