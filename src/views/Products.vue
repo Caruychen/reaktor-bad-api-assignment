@@ -47,10 +47,10 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["getProducts"]),
+    ...mapGetters("products", ["getProducts"]),
   },
   methods: {
-    ...mapActions(["fetchProducts"]),
+    ...mapActions("products", ["fetchProducts"]),
     loadProductData: async function () {
       this.loading = true;
       await this.fetchProducts(this.category);
