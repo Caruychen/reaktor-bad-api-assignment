@@ -57,7 +57,7 @@ export default {
     ...mapState(["availability"]),
   },
   methods: {
-    ...mapActions("availability", ["fetchAvailability"]),
+    ...mapActions(["fetchData"]),
     ...mapMutations("availability", ["initAvailabilityManufacturer"]),
     loadAvailability: function () {
       const manufacturers = this.getManufacturerSet(this.category);
@@ -66,10 +66,13 @@ export default {
           this.initAvailabilityManufacturer(manufacturer);
         }
         this.$set(this.loadStatus, manufacturer, false);
-        const data = this.availability[manufacturer].items
-          ? true
-          : await this.fetchAvailability(manufacturer);
-        this.$set(this.loadStatus, manufacturer, data);
+        if (!this.availability[manufacturer].items) {
+          await this.fetchData({
+            module: "availability",
+            type: manufacturer,
+          });
+        }
+        this.$set(this.loadStatus, manufacturer, true);
       });
     },
   },

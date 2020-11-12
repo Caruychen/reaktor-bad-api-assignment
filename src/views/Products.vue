@@ -34,7 +34,7 @@ export default {
       loadStatus: {
         jackets: false,
         shirts: false,
-        accessories: false
+        accessories: false,
       },
       pageProxy: {
         jackets: 1,
@@ -78,11 +78,14 @@ export default {
     },
   },
   methods: {
-    ...mapActions("products", ["fetchProducts"]),
+    ...mapActions(["fetchData"]),
     loadProductData: async function () {
       if (!this.products[this.category].items) {
         this.loadStatus[this.category] = false;
-        const fetchedCategory = await this.fetchProducts(this.category);
+        const fetchedCategory = await this.fetchData({
+          module: "products",
+          type: this.category,
+        });
         this.loadStatus[fetchedCategory] = true;
       }
     },

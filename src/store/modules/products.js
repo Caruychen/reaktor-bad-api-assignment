@@ -1,5 +1,3 @@
-import { badApiHTTP } from "@/service/index.js";
-
 export default {
   namespaced: true,
   state: {
@@ -28,47 +26,6 @@ export default {
     getManufacturerSet: state => (category) => {
       const distinctManufacturers = [...new Set(state[category].items.map(item => item.manufacturer))]
       return distinctManufacturers;
-    }
-  },
-  mutations: {
-    setProductData(state, payload) {
-      state[payload.category].items = payload.data
-    },
-    setProductIsFetching(state, payload) {
-      state[payload.category].isFetching = payload.isFetching;
-    },
-    setProductCall(state, payload) {
-      state[payload.category].fetchCall = payload.productCall;
-    }
-  },
-  actions: {
-    fetchProducts: ({ state, commit, dispatch }, category) => {
-      const productData = state[category]
-      if (productData.isFetching) {
-        return productData.fetchCall
-      }
-      commit("setProductIsFetching", { category, isFetching: true })
-      const productCall = dispatch("productCall", category);
-      commit("setProductCall", {
-        category,
-        productCall
-      })
-      return productCall
-    },
-    productCall: async ({ commit }, category) => {
-      const products = await badApiHTTP.get("products/" + category);
-      if (products.status === 200) {
-        commit("setProductData", {
-          data: products.data,
-          category
-        })
-      }
-      commit("setProductIsFetching", { category, isFetching: false })
-      commit("setProductCall", {
-        category,
-        productCall: false
-      });
-      return Promise.resolve(category);
     }
   }
 }
