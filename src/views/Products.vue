@@ -16,13 +16,17 @@
       <label for="page">of {{ getPages(category) }}</label>
       <button @click="incrementPage(category)" type="button">Next</button>
     </div>
-    <BaseListTable :category="category" :currentPage="currentPage" :loading="loading"/>
+    <BaseListTable
+      v-if="!loading"
+      :category="category"
+      :currentPage="currentPage"
+    />
   </div>
 </template>
 
 <script>
 import BaseListTable from "@/components/BaseListTable.vue";
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapState } from "vuex";
 
 export default {
   data() {
@@ -42,7 +46,7 @@ export default {
     },
   },
   components: {
-    BaseListTable
+    BaseListTable,
   },
   watch: {
     category() {
@@ -50,6 +54,7 @@ export default {
     },
   },
   computed: {
+    ...mapState(["products"]),
     ...mapGetters("products", ["getPages"]),
     currentPage: {
       get() {
@@ -62,18 +67,20 @@ export default {
           } else if (page > this.getPages(this.category)) {
             this.pageProxy[this.category] = this.getPages(this.category);
           } else {
-            this.pageProxy[this.category] = page
+            this.pageProxy[this.category] = page;
           }
         }
-      }
+      },
     },
   },
   methods: {
     ...mapActions("products", ["fetchProducts"]),
     loadProductData: async function () {
-      this.loading = true;
-      await this.fetchProducts(this.category);
-      this.loading = false;
+      if (!this.products[this.category]) {
+        this.loading = true;
+        await this.fetchProducts(this.category);
+        this.loading = false;
+      }
     },
     incrementPage: function (category) {
       if (this.pageProxy[category] < this.getPages(this.category))
@@ -98,10 +105,10 @@ export default {
   margin-bottom: 1rem;
 }
 
-input[type=number]::-webkit-inner-spin-button {
+input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
   text-align: center;
   margin: 0 5px;

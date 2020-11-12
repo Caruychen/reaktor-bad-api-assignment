@@ -1,49 +1,41 @@
 <template>
-  <td class="loading-data" v-if="loading">loading...</td>
-  <td :class="getAvailability(manufacturer, id).toLowerCase() " v-else>{{ getAvailability(manufacturer, id) }}</td>
+  <td :class="availability.toString().toLowerCase()">{{ availability }}</td>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 export default {
-  data() {
-    return {
-      loading: false,
-    };
-  },
   props: {
     manufacturer: {
       type: String,
-      required: true
+      required: true,
     },
     id: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
+    status: {
+      type: Boolean,
+      required: true,
+    },
   },
   computed: {
-    ...mapGetters("availability", ["getAvailability"])
-  },
-  methods: {
-    ...mapActions("availability", ["fetchAvailability"]),
-    loadAvailability: async function() {
-      this.loading = true;
-      await this.fetchAvailability(this.manufacturer);
-      this.loading = false;
+    ...mapGetters("availability", ["getAvailability"]),
+    availability: function () {
+      return this.status
+        ? this.getAvailability(this.manufacturer, this.id)
+        : "loading...";
     }
-  },
-  created() {
-    this.loadAvailability();
   }
 };
 </script>
 
 <style scoped>
-.loading-data {
+.loading {
   opacity: 0.8;
 }
 .instock {
-  background-color: rgba(144, 238, 144, 0.5)
+  background-color: rgba(144, 238, 144, 0.5);
 }
 .lessthan10 {
   background-color: rgba(255, 255, 0, 0.7);

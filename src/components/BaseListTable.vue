@@ -1,5 +1,5 @@
 <template>
-  <table v-if="!loading">
+  <table>
     <tr>
       <th>Index</th>
       <th>Name</th>
@@ -19,17 +19,25 @@
       <td>{{ product.manufacturer }}</td>
       <td>{{ product.price }}</td>
       <td>{{ product.color }}</td>
-      <!-- <BaseAvailability
-          :id="product.id"
-          :manufacturer="product.manufacturer"
-        /> -->
+      <BaseAvailability
+        :manufacturer="product.manufacturer"
+        :id="product.id"
+        :status="loadStatus[product.manufacturer]"
+      />
     </tr>
   </table>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import BaseAvailability from "@/components/BaseAvailability.vue";
+import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
+
 export default {
+  data() {
+    return {
+      loadStatus: {},
+    };
+  },
   props: {
     category: {
       type: String,
@@ -39,14 +47,34 @@ export default {
       type: Number,
       require: true,
     },
-    loading: {
-      type: Boolean,
-      require: true,
-    },
+  },
+  components: {
+    BaseAvailability,
   },
   computed: {
-    ...mapGetters("products", ["getProducts"]),
+    ...mapGetters("products", ["getProducts", "getManufacturerSet"]),
+    ...mapGetters("availability", ["getAvailability"]),
+    ...mapState(["availability"]),
   },
+  methods: {
+    ...mapActions("availability", ["fetchAvailability"]),
+    ...mapMutations("availability", ["initAvailabilityManufacturer"]),
+    loadAvailability: function () {
+      const manufacturers = this.getManufacturerSet(this.category);
+      manufacturers.forEach((manufacturer) => {
+        if (!this.availability[manufacturer]) {
+          this.initAvailabilityManufacturer(manufacturer);
+        }
+        this.$set(this.loadStatus, manufacturer, false);
+        this.fetchAvailability(manufacturer).then((data) => {
+          this.$set(this.loadStatus, manufacturer, data);
+        });
+      });
+    },
+  },
+  created() {
+    this.loadAvailability();
+  }
 };
 </script>
 
