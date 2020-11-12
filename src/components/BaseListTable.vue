@@ -10,10 +10,10 @@
       <th>Availability</th>
     </tr>
     <tr
-      v-for="(product, index) in getProducts(category, currentPage)"
-      :key="index"
+      v-for="product in getProducts(category, currentPage)"
+      :key="product.index"
     >
-      <td>{{ index + (currentPage - 1) * 100 + 1 }}</td>
+      <td>{{ product.index }}</td>
       <td>{{ product.name }}</td>
       <td>{{ product.id }}</td>
       <td>{{ product.manufacturer }}</td>
@@ -61,20 +61,21 @@ export default {
     ...mapMutations("availability", ["initAvailabilityManufacturer"]),
     loadAvailability: function () {
       const manufacturers = this.getManufacturerSet(this.category);
-      manufacturers.forEach((manufacturer) => {
+      manufacturers.forEach(async (manufacturer) => {
         if (!this.availability[manufacturer]) {
           this.initAvailabilityManufacturer(manufacturer);
         }
         this.$set(this.loadStatus, manufacturer, false);
-        this.fetchAvailability(manufacturer).then((data) => {
-          this.$set(this.loadStatus, manufacturer, data);
-        });
+        const data = this.availability[manufacturer].items
+          ? true
+          : await this.fetchAvailability(manufacturer);
+        this.$set(this.loadStatus, manufacturer, data);
       });
     },
   },
   created() {
     this.loadAvailability();
-  }
+  },
 };
 </script>
 

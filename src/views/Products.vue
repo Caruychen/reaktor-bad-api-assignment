@@ -1,7 +1,7 @@
 <template>
   <div id="products">
     <h1>{{ category | capitalize }}</h1>
-    <div v-if="!loading" class="page-selector">
+    <div v-if="loadStatus[category]" class="page-selector">
       <button @click="decrementPage(category)" type="button">Prev</button>
       <label for="page">Page</label>
       <input
@@ -17,7 +17,7 @@
       <button @click="incrementPage(category)" type="button">Next</button>
     </div>
     <BaseListTable
-      v-if="!loading"
+      v-if="loadStatus[category]"
       :category="category"
       :currentPage="currentPage"
     />
@@ -31,7 +31,11 @@ import { mapGetters, mapActions, mapState } from "vuex";
 export default {
   data() {
     return {
-      loading: false,
+      loadStatus: {
+        jackets: false,
+        shirts: false,
+        accessories: false
+      },
       pageProxy: {
         jackets: 1,
         shirts: 1,
@@ -76,10 +80,10 @@ export default {
   methods: {
     ...mapActions("products", ["fetchProducts"]),
     loadProductData: async function () {
-      if (!this.products[this.category]) {
-        this.loading = true;
-        await this.fetchProducts(this.category);
-        this.loading = false;
+      if (!this.products[this.category].items) {
+        this.loadStatus[this.category] = false;
+        const fetchedCategory = await this.fetchProducts(this.category);
+        this.loadStatus[fetchedCategory] = true;
       }
     },
     incrementPage: function (category) {

@@ -9,9 +9,6 @@ export default {
         return item.id.toLowerCase() === id
       })
         .DATAPAYLOAD.match(/<INSTOCKVALUE>(.*?)<\/INSTOCKVALUE>/)[1];
-    },
-    loaded: state => manufacturer => {
-      return state[manufacturer].items ? true : false;
     }
   },
   mutations: {
@@ -49,16 +46,13 @@ export default {
       });
       return availabilityCall;
     },
-    availabilityCall: async ({ state, commit }, manufacturer) => {
-      const items = state[manufacturer].items;
-      if (!items) {
-        const availability = await badApiHTTP.get("availability/" + manufacturer);
-        if (availability.status === 200) {
-          commit("setAvailabilityData", {
-            data: availability.data.response,
-            manufacturer
-          })
-        }
+    availabilityCall: async ({ commit }, manufacturer) => {
+      const availability = await badApiHTTP.get("availability/" + manufacturer);
+      if (availability.status === 200) {
+        commit("setAvailabilityData", {
+          data: availability.data.response,
+          manufacturer
+        })
       }
       commit("setAvailabilityIsFetching", { manufacturer, isFetching: false });
       commit("setAvailabilityCall", {
