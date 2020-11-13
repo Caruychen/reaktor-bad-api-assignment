@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 export default {
   props: {
     manufacturer: {
@@ -14,19 +14,23 @@ export default {
       type: String,
       required: true,
     },
-    status: {
+    isLoaded: {
       type: Boolean,
       required: true,
     },
   },
   computed: {
+    ...mapState({ availabilityState: "availability" }),
     ...mapGetters("availability", ["getAvailability"]),
     availability: function () {
-      return this.status
+      const isManufacturerExists = !!this.availabilityState[this.manufacturer].items;
+      return this.isLoaded
         ? this.getAvailability(this.manufacturer, this.id)
-        : "loading...";
-    }
-  }
+        : isManufacturerExists
+          ? this.getAvailability(this.manufacturer, this.id)
+          : "loading...";
+    },
+  },
 };
 </script>
 
