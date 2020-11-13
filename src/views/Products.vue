@@ -80,14 +80,12 @@ export default {
   methods: {
     ...mapActions(["fetchData"]),
     loadProductData: async function () {
-      if (!this.products[this.category].items) {
-        this.loadStatus[this.category] = false;
-        const fetchedCategory = await this.fetchData({
+      this.loadStatus[this.category] =
+        !!this.products[this.category].items ||
+        !!(await this.fetchData({
           module: "products",
           type: this.category,
-        });
-        this.loadStatus[fetchedCategory] = true;
-      }
+        }));
     },
     incrementPage: function (category) {
       if (this.pageProxy[category] < this.getPages(this.category))
