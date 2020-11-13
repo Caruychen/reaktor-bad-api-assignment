@@ -8,16 +8,5 @@ export default {
       })
         .DATAPAYLOAD.match(/<INSTOCKVALUE>(.*?)<\/INSTOCKVALUE>/)[1];
     }
-  },
-  mutations: {
-    initAvailabilityManufacturer(state, manufacturer) {
-      if (!state[manufacturer]) {
-        state[manufacturer] = {
-          items: null,
-          isFetching: false,
-          fetchCall: null
-        }
-      }
-    }
   }
 }

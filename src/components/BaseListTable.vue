@@ -53,12 +53,11 @@ export default {
   },
   computed: {
     ...mapGetters("products", ["getProducts", "getManufacturerSet"]),
-    ...mapGetters("availability", ["getAvailability"]),
     ...mapState(["availability"]),
   },
   methods: {
     ...mapActions(["fetchData"]),
-    ...mapMutations("availability", ["initAvailabilityManufacturer"]),
+    ...mapMutations(["initAvailabilityManufacturer"]),
     loadAvailability: function () {
       const manufacturers = this.getManufacturerSet(this.category);
       manufacturers.forEach(async (manufacturer) => {
