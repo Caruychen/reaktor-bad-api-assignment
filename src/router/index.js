@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from "@/store/index.js";
 
 Vue.use(VueRouter)
 
@@ -9,9 +10,19 @@ const routes = [
     name: "Products",
     props: true,
     component: () => import(/* webpackChunkName: "products" */ '../views/Products.vue'),
+    beforeEnter: (to, from, next) => {
+      const exists = !!store.state.products[to.params.category];
+      exists 
+        ? next() 
+        : next({ name: "NotFound" });
+    }
   },
   {
     path: "",
+    redirect: "/products/jackets"
+  },
+  {
+    path: "/products",
     redirect: "/products/jackets"
   },
   {
