@@ -4,9 +4,10 @@ import router from "@/router/index.js";
 const badApiHTTP = axios.create({
   baseURL: "https://bad-api-assignment.reaktor.com/"
 });
-
-// badApiHTTP.defaults.headers.common["x-force-error-mode"] = "all";
-
+/*
+Test code:
+  badApiHTTP.defaults.headers.common["x-force-error-mode"] = "all";
+*/
 badApiHTTP.interceptors.response.use(
   response => {
     const originalConfig = response.config;
@@ -14,7 +15,10 @@ badApiHTTP.interceptors.response.use(
     if (originalConfig.url.includes("availability")) {
       const availabilityRes = response.data.response
       if (availabilityRes.length <= 0 || availabilityRes === "[]") {
-        // originalConfig.headers["x-force-error-mode"] = ""
+        /*
+        Test code:
+          originalConfig.headers["x-force-error-mode"] = ""
+        */
         return badApiHTTP(originalConfig);
       }
     }
