@@ -22,7 +22,7 @@
       <BaseAvailability
         :manufacturer="product.manufacturer"
         :id="product.id"
-        :status="loadStatus[product.manufacturer]"
+        :isLoaded="loadStatus[product.manufacturer]"
       />
     </tr>
   </table>
@@ -36,6 +36,7 @@ export default {
   data() {
     return {
       loadStatus: {},
+      timer: {},
     };
   },
   props: {
@@ -58,7 +59,7 @@ export default {
   methods: {
     ...mapActions(["fetchData"]),
     ...mapMutations(["initAvailabilityManufacturer"]),
-    loadAvailability: function () {
+    loadFetchSequence: function () {
       const manufacturers = this.getManufacturerSet(this.category);
       manufacturers.forEach(async (manufacturer) => {
         if (!this.availability[manufacturer]) {
@@ -66,17 +67,34 @@ export default {
         }
         this.$set(this.loadStatus, manufacturer, false);
         if (!this.availability[manufacturer].items) {
-          await this.fetchData({
-            module: "availability",
-            type: manufacturer,
-          });
+          await this.fetchAvailability(manufacturer);
         }
-        this.$set(this.loadStatus, manufacturer, true);
+        this.loadStatus[manufacturer] = true;
+        this.timer[manufacturer] = this.setFetchInterval(manufacturer);
       });
     },
+    setFetchInterval: function (manufacturer) {
+      // Background refresh availability data in 5 minute intervals
+      return setInterval(async () => {
+        this.loadStatus[manufacturer] = false;
+        await this.fetchAvailability(manufacturer);
+        this.loadStatus[manufacturer] = true;
+      }, 300000);
+    },
+    fetchAvailability: function (manufacturer) {
+      return this.fetchData({
+        module: "availability",
+        type: manufacturer
+      })
+    }
   },
   created() {
-    this.loadAvailability();
+    this.loadFetchSequence();
+  },
+  beforeDestroy() {
+    for (const key of Object.entries(this.timer)) {
+      clearInterval(this.timer[key[0]]);
+    }
   },
 };
 </script>
