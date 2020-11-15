@@ -23,9 +23,16 @@ export default {
     getPages: state => category => {
       return Math.ceil(state[category].items.length / 100);
     },
-    getManufacturerSet: state => (category) => {
-      const distinctManufacturers = [...new Set(state[category].items.map(item => item.manufacturer))]
-      return distinctManufacturers;
+    getUniqueSet: state => (category, column) => {
+      return [...new Set(state[category].items.map(item => item[column]).flat())]
+    },
+    getFilteredUniqueSet: (state, getters) => (category, column, searchInput, maxOptions) => {
+      const searchTerm = searchInput.toString().toUpperCase();
+      return getters.getUniqueSet(category, column)
+        .filter(item => 
+          item.toString().includes(searchTerm)
+        )
+        .slice(0, maxOptions)
     }
   }
 }

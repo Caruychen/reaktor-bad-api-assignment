@@ -1,5 +1,5 @@
 <template>
-  <table>
+  <table id="products-list">
     <tr>
       <th>Index</th>
       <th>Name</th>
@@ -9,6 +9,7 @@
       <th>Color</th>
       <th>Availability</th>
     </tr>
+    <ProductsFilter :category="category"/>
     <tr
       v-for="product in getProducts(category, currentPage)"
       :key="product.index"
@@ -30,6 +31,7 @@
 
 <script>
 import BaseAvailability from "@/components/BaseAvailability.vue";
+import ProductsFilter from "@/components/ProductsFilter.vue";
 import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 
 export default {
@@ -51,16 +53,17 @@ export default {
   },
   components: {
     BaseAvailability,
+    ProductsFilter
   },
   computed: {
-    ...mapGetters("products", ["getProducts", "getManufacturerSet"]),
+    ...mapGetters("products", ["getProducts", "getUniqueSet"]),
     ...mapState(["availability"]),
   },
   methods: {
     ...mapActions(["fetchData"]),
     ...mapMutations(["initAvailabilityManufacturer"]),
     loadFetchSequence: function () {
-      const manufacturers = this.getManufacturerSet(this.category);
+      const manufacturers = this.getUniqueSet(this.category, 'manufacturer');
       manufacturers.forEach(async (manufacturer) => {
         if (!this.availability[manufacturer]) {
           this.initAvailabilityManufacturer(manufacturer);

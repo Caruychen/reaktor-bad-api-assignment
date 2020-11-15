@@ -16,7 +16,7 @@
       <label for="page">of {{ getPages(category) }}</label>
       <button @click="incrementPage(category)" type="button">Next</button>
     </div>
-    <BaseListTable
+    <ProductsList
       v-if="loadStatus[category]"
       :category="category"
       :currentPage="currentPage"
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import BaseListTable from "@/components/BaseListTable.vue";
+import ProductsList from "@/components/ProductsList.vue";
 import { mapGetters, mapActions, mapState } from "vuex";
 
 export default {
@@ -50,7 +50,7 @@ export default {
     },
   },
   components: {
-    BaseListTable,
+    ProductsList,
   },
   watch: {
     category() {
