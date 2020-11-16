@@ -8,6 +8,11 @@ export default {
         return item.id.toLowerCase() === id
       })
         .DATAPAYLOAD.match(/<INSTOCKVALUE>(.*?)<\/INSTOCKVALUE>/)[1];
+    },
+    getAllAvailability: (state, getters, rootState) => (category) => {
+      return [... new Set(rootState.products[category].items.map(item => {
+        return getters.getAvailability(item.manufacturer, item.id)
+      }))]
     }
   }
 }

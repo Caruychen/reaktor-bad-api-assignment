@@ -9,7 +9,7 @@
       <th>Color</th>
       <th>Availability</th>
     </tr>
-    <ProductsFilter :category="category"/>
+    <ProductsFilter :category="category" :loadStatus="loadStatus"/>
     <tr
       v-for="product in getProducts(category, currentPage)"
       :key="product.index"
