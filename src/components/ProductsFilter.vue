@@ -12,7 +12,6 @@
 
 <script>
 import ProductsFilterInput from "@/components/ProductsFilterInput.vue";
-import { mapGetters } from "vuex";
 
 export default {
   props: {
@@ -27,9 +26,6 @@ export default {
   },
   components: {
     ProductsFilterInput,
-  },
-  computed: {
-    ...mapGetters("products", ["getUniqueSet", "getFilteredUniqueSet"]),
   }
 };
 </script>

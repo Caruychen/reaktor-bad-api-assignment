@@ -29,9 +29,9 @@ export default {
     getFilteredUniqueSet: (state, getters) => (category, column, searchInput, maxOptions) => {
       const searchTerm = searchInput.toString().toUpperCase();
       return getters.getUniqueSet(category, column)
-        .filter(item => 
-          item.toString().includes(searchTerm)
-        )
+        .filter(item => {
+          return item.toString().includes(searchTerm)
+        })
         .slice(0, maxOptions)
     }
   }

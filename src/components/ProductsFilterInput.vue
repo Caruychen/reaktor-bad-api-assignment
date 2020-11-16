@@ -1,12 +1,8 @@
 <template>
   <td class="filter-input">
-    <input :list="column" type="text" v-model="search" />
-    <datalist :id="column">
-      <option
-        v-for="item in optionSet"
-        :key="item"
-        :value="item"
-      ></option>
+    <input @focus="focus" @blur="blur" :list="column" type="text" v-model="search" />
+    <datalist v-if="isSelected" :id="column">
+      <option v-for="item in optionSet" :key="item" :value="item"></option>
     </datalist>
   </td>
 </template>
@@ -17,6 +13,7 @@ export default {
   data() {
     return {
       search: "",
+      isSelected: false
     };
   },
   props: {
@@ -54,7 +51,21 @@ export default {
       )
         ? this.getAllAvailability(this.category)
         : "";
-    },
+    }
   },
+  methods: {
+    focus: function() {
+      this.isSelected = true;
+    },
+    blur: function() {
+      this.isSelected = false;
+    }
+  }
 };
 </script>
+
+<style scoped>
+input {
+  width: 95%
+}
+</style>
