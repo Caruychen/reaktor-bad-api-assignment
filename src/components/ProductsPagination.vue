@@ -35,7 +35,7 @@ export default {
   computed: {
     currentPage: {
       get() {
-        return this.pageProxy;
+        return this.clampPages(this.pageProxy);
       },
       set(page) {
         if (page) this.$emit("updatePage", this.clampPages(page));
