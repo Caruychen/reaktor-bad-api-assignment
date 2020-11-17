@@ -20,6 +20,9 @@ export default {
         }
       }).slice(minIndex, maxIndex);
     },
+    getFilteredProducts: () => {
+
+    },
     getPages: (state, getters) => category => {
       // return Math.ceil(state[category].items.length / 100); 
       return Math.ceil(getters.getProducts(category).length / 100); 

@@ -1,6 +1,6 @@
 <template>
   <div class="page-selector">
-    <button @click="decrementPage(category)" type="button">Prev</button>
+    <button @click="decrementPage" type="button">Prev</button>
     <label for="page">Page</label>
     <input
       id="page"
@@ -12,7 +12,7 @@
       :max="getPages(category)"
     />
     <label for="page">of {{ getPages(category) }}</label>
-    <button @click="incrementPage(category)" type="button">Next</button>
+    <button @click="incrementPage" type="button">Next</button>
   </div>
 </template>
 
@@ -20,42 +20,24 @@
 import { mapGetters } from "vuex";
 
 export default {
-  data() {
-    return {
-      pageProxy: {
-        jackets: 1,
-        shirts: 1,
-        accessories: 1,
-      },
-    };
-  },
   props: {
     category: {
       type: String,
       required: true,
     },
-  },
-  watch: {
-    currentPage() {
-      this.$emit("updatePage", this.currentPage);
-    },
+    pageProxy: {
+      type: Number,
+      required: true
+    }
   },
   computed: {
     ...mapGetters("products", ["getPages"]),
     currentPage: {
       get() {
-        return this.pageProxy[this.category];
+        return this.pageProxy;
       },
       set(page) {
-        if (page) {
-          if (page < 1) {
-            this.pageProxy[this.category] = 1;
-          } else if (page > this.getPages(this.category)) {
-            this.pageProxy[this.category] = this.getPages(this.category);
-          } else {
-            this.pageProxy[this.category] = page;
-          }
-        }
+        if (page) this.$emit("updatePage", this.clampPages(page));
       },
     },
   },
@@ -66,7 +48,11 @@ export default {
     decrementPage: function () {
       this.currentPage--;
     },
-  },
+    clampPages: function(newPage) {
+      const maxPages = this.getPages(this.category);
+      return Math.min(Math.max(newPage, 1), maxPages);
+    }
+  }
 };
 </script>
 

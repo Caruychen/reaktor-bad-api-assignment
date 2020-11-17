@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ProductsPagination :category="category" @updatePage="updatePage" />
+    <ProductsPagination :category="category" :pageProxy="pageProxy[category]" @updatePage="updatePage" />
     <table id="products-list">
       <tr>
         <th>Index</th>
@@ -17,7 +17,7 @@
         @updateFilter="updateFilter"
       />
       <tr
-        v-for="product in getProducts(category, currentPage)"
+        v-for="product in getProducts(category, pageProxy[category])"
         :key="product.index"
       >
         <td>{{ product.index }}</td>
@@ -33,6 +33,7 @@
         />
       </tr>
     </table>
+    <ProductsPagination :category="category" :pageProxy="pageProxy[category]" @updatePage="updatePage" />
   </div>
 </template>
 
@@ -47,7 +48,11 @@ export default {
     return {
       manufacturerIsLoaded: {},
       timer: {},
-      currentPage: 1
+      pageProxy: {
+        jackets: 1,
+        shirts: 1,
+        accessories: 1
+      }
     };
   },
   props: {
@@ -100,7 +105,7 @@ export default {
       console.log(searchInputs);
     },
     updatePage: function (newPage) {
-      this.currentPage = newPage;
+      this.pageProxy[this.category] = newPage;
     }
   },
   created() {
