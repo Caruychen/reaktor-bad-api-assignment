@@ -17,7 +17,7 @@
         @updateFilter="updateFilter"
       />
       <tr
-        v-for="product in getProducts(category, pageProxy[category])"
+        v-for="product in getFilteredProducts(category, pageProxy[category], search)"
         :key="product.index"
       >
         <td>{{ product.index }}</td>
@@ -25,7 +25,7 @@
         <td>{{ product.id }}</td>
         <td>{{ product.manufacturer }}</td>
         <td>{{ product.price }}</td>
-        <td>{{ product.color }}</td>
+        <td>{{ product.color.join(', ') }}</td>
         <BaseAvailability
           :manufacturer="product.manufacturer"
           :id="product.id"
@@ -52,7 +52,8 @@ export default {
         jackets: 1,
         shirts: 1,
         accessories: 1
-      }
+      },
+      search: {}
     };
   },
   props: {
@@ -67,7 +68,7 @@ export default {
     ProductsPagination
   },
   computed: {
-    ...mapGetters("products", ["getProducts", "getUniqueSet"]),
+    ...mapGetters("products", ["getProducts", "getUniqueSet", "getFilteredProducts"]),
     ...mapState(["availability"]),
   },
   methods: {
@@ -101,8 +102,8 @@ export default {
         type: manufacturer,
       });
     },
-    updateFilter: function (searchInputs) {
-      console.log(searchInputs);
+    updateFilter: function (column, searchInput) {
+      this.$set(this.search, column, searchInput);
     },
     updatePage: function (newPage) {
       this.pageProxy[this.category] = newPage;

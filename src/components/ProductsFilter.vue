@@ -6,7 +6,7 @@
     <ProductsFilterInput :category="category" @searchInput="collateInputs" column="manufacturer" />
     <ProductsFilterInput :category="category" @searchInput="collateInputs" column="price" />
     <ProductsFilterInput :category="category" @searchInput="collateInputs" column="color" />
-    <ProductsFilterInput :category="category" @searchInput="collateInputs" column="availability" :loadStatus="loadStatus"/>
+    <ProductsFilterInput :category="category" @searchInput="collateInputs" column="availability" :isAvailabilityFilter="loadStatus"/>
   </tr>
 </template>
 
@@ -14,11 +14,6 @@
 import ProductsFilterInput from "@/components/ProductsFilterInput.vue";
 
 export default {
-  data() {
-    return {
-      searchInputs: {}
-    }
-  },
   props: {
     category: {
       type: String,
@@ -33,9 +28,8 @@ export default {
     ProductsFilterInput,
   },
   methods: {
-    collateInputs: function(input) {
-      this.searchInputs[input.column] = input.inputContent;
-      this.$emit("updateFilter", this.searchInputs);
+    collateInputs: function(column, searchInput) {
+      this.$emit("updateFilter", column, searchInput);
     }
   }
 };

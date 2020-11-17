@@ -19,7 +19,7 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      search: "",
+      searchProxy: "",
       isSelected: false,
     };
   },
@@ -35,15 +35,23 @@ export default {
     maxOptions: {
       type: Number,
     },
-    loadStatus: {
+    isAvailabilityFilter: {
       type: Object,
     },
   },
   computed: {
     ...mapGetters("products", ["getFilteredUniqueSet"]),
     ...mapGetters("availability", ["getAllAvailability"]),
+    search: {
+      get() {
+        return this.searchProxy;
+      },
+      set(input) {
+        this.searchProxy = this.column === "name" ? input.toUpperCase() : input;
+      },
+    },
     optionSet: function () {
-      return this.loadStatus
+      return this.isAvailabilityFilter
         ? this.availabilityOptions
         : this.getFilteredUniqueSet(
             this.category,
@@ -53,7 +61,7 @@ export default {
           );
     },
     availabilityOptions: function () {
-      return Object.entries(this.loadStatus).some(
+      return Object.entries(this.isAvailabilityFilter).some(
         (manufacturer) => manufacturer[1]
       )
         ? this.getAllAvailability(this.category)
@@ -68,10 +76,7 @@ export default {
       this.isSelected = false;
     },
     input(event, inputContent) {
-      this.$emit("searchInput", {
-        column: this.column,
-        inputContent
-      });
+      this.$emit("searchInput", this.column, inputContent);
     },
   },
 };
