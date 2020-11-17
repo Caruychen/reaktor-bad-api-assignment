@@ -1,63 +1,65 @@
 <template>
-  <table id="products-list">
-    <tr>
-      <th>Index</th>
-      <th>Name</th>
-      <th>ID</th>
-      <th>Manufacturer</th>
-      <th>Price</th>
-      <th>Color</th>
-      <th>Availability</th>
-    </tr>
-    <ProductsFilter
-      :category="category"
-      :loadStatus="loadStatus"
-      @updateFilter="updateFilter"
-    />
-    <tr
-      v-for="product in getProducts(category, currentPage)"
-      :key="product.index"
-    >
-      <td>{{ product.index }}</td>
-      <td>{{ product.name }}</td>
-      <td>{{ product.id }}</td>
-      <td>{{ product.manufacturer }}</td>
-      <td>{{ product.price }}</td>
-      <td>{{ product.color }}</td>
-      <BaseAvailability
-        :manufacturer="product.manufacturer"
-        :id="product.id"
-        :isLoaded="loadStatus[product.manufacturer]"
+  <div>
+    <ProductsPagination :category="category" @updatePage="updatePage" />
+    <table id="products-list">
+      <tr>
+        <th>Index</th>
+        <th>Name</th>
+        <th>ID</th>
+        <th>Manufacturer</th>
+        <th>Price</th>
+        <th>Color</th>
+        <th>Availability</th>
+      </tr>
+      <ProductsFilter
+        :category="category"
+        :loadStatus="manufacturerIsLoaded"
+        @updateFilter="updateFilter"
       />
-    </tr>
-  </table>
+      <tr
+        v-for="product in getProducts(category, currentPage)"
+        :key="product.index"
+      >
+        <td>{{ product.index }}</td>
+        <td>{{ product.name }}</td>
+        <td>{{ product.id }}</td>
+        <td>{{ product.manufacturer }}</td>
+        <td>{{ product.price }}</td>
+        <td>{{ product.color }}</td>
+        <BaseAvailability
+          :manufacturer="product.manufacturer"
+          :id="product.id"
+          :isLoaded="manufacturerIsLoaded[product.manufacturer]"
+        />
+      </tr>
+    </table>
+  </div>
 </template>
 
 <script>
 import BaseAvailability from "@/components/BaseAvailability.vue";
 import ProductsFilter from "@/components/ProductsFilter.vue";
+import ProductsPagination from "@/components/ProductsPagination.vue";
 import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 
 export default {
   data() {
     return {
-      loadStatus: {},
+      manufacturerIsLoaded: {},
       timer: {},
+      currentPage: 1
     };
   },
   props: {
     category: {
       type: String,
       required: true,
-    },
-    currentPage: {
-      type: Number,
-      require: true,
-    },
+    }
   },
   components: {
     BaseAvailability,
     ProductsFilter,
+    ProductsPagination
   },
   computed: {
     ...mapGetters("products", ["getProducts", "getUniqueSet"]),
@@ -72,20 +74,20 @@ export default {
         if (!this.availability[manufacturer]) {
           this.initAvailabilityManufacturer(manufacturer);
         }
-        this.$set(this.loadStatus, manufacturer, false);
+        this.$set(this.manufacturerIsLoaded, manufacturer, false);
         if (!this.availability[manufacturer].items) {
           await this.fetchAvailability(manufacturer);
         }
-        this.loadStatus[manufacturer] = true;
+        this.manufacturerIsLoaded[manufacturer] = true;
         this.timer[manufacturer] = this.setFetchInterval(manufacturer);
       });
     },
     setFetchInterval: function (manufacturer) {
       // Background refresh availability data in 5 minute intervals
       return setInterval(async () => {
-        this.loadStatus[manufacturer] = false;
+        this.manufacturerIsLoaded[manufacturer] = false;
         await this.fetchAvailability(manufacturer);
-        this.loadStatus[manufacturer] = true;
+        this.manufacturerIsLoaded[manufacturer] = true;
       }, 300000);
     },
     fetchAvailability: function (manufacturer) {
@@ -97,6 +99,9 @@ export default {
     updateFilter: function (searchInputs) {
       console.log(searchInputs);
     },
+    updatePage: function (newPage) {
+      this.currentPage = newPage;
+    }
   },
   created() {
     this.loadFetchSequence();
