@@ -9,16 +9,14 @@
       v-model.number="currentPage"
       step="1"
       min="1"
-      :max="getPages(category)"
+      :max="maxPages"
     />
-    <label for="page">of {{ getPages(category) }}</label>
+    <label for="page">of {{ maxPages }}</label>
     <button @click="incrementPage" type="button">Next</button>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-
 export default {
   props: {
     category: {
@@ -28,10 +26,13 @@ export default {
     pageProxy: {
       type: Number,
       required: true
+    },
+    maxPages: {
+      type: Number,
+      required: true
     }
   },
   computed: {
-    ...mapGetters("products", ["getPages"]),
     currentPage: {
       get() {
         return this.pageProxy;
@@ -49,8 +50,7 @@ export default {
       this.currentPage--;
     },
     clampPages: function(newPage) {
-      const maxPages = this.getPages(this.category);
-      return Math.min(Math.max(newPage, 1), maxPages);
+      return Math.min(Math.max(newPage, 1), this.maxPages);
     }
   }
 };

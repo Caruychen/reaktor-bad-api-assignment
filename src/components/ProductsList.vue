@@ -1,6 +1,11 @@
 <template>
   <div>
-    <ProductsPagination :category="category" :pageProxy="pageProxy[category]" @updatePage="updatePage" />
+    <ProductsPagination
+      :category="category"
+      :pageProxy="pageProxy[category]"
+      :maxPages="products.maxPages"
+      @updatePage="updatePage"
+    />
     <table id="products-list">
       <tr>
         <th>Index</th>
@@ -16,16 +21,13 @@
         :loadStatus="manufacturerIsLoaded"
         @updateFilter="updateFilter"
       />
-      <tr
-        v-for="product in getFilteredProducts(category, pageProxy[category], search)"
-        :key="product.index"
-      >
+      <tr v-for="product in products.list" :key="product.index">
         <td>{{ product.index }}</td>
         <td>{{ product.name }}</td>
         <td>{{ product.id }}</td>
         <td>{{ product.manufacturer }}</td>
         <td>{{ product.price }}</td>
-        <td>{{ product.color.join(', ') }}</td>
+        <td>{{ product.color.join(", ") }}</td>
         <BaseAvailability
           :manufacturer="product.manufacturer"
           :id="product.id"
@@ -33,7 +35,12 @@
         />
       </tr>
     </table>
-    <ProductsPagination :category="category" :pageProxy="pageProxy[category]" @updatePage="updatePage" />
+    <ProductsPagination
+      :category="category"
+      :pageProxy="pageProxy[category]"
+      :maxPages="products.maxPages"
+      @updatePage="updatePage"
+    />
   </div>
 </template>
 
@@ -51,25 +58,43 @@ export default {
       pageProxy: {
         jackets: 1,
         shirts: 1,
-        accessories: 1
+        accessories: 1,
       },
-      search: {}
+      search: {},
     };
   },
   props: {
     category: {
       type: String,
       required: true,
-    }
+    },
   },
   components: {
     BaseAvailability,
     ProductsFilter,
-    ProductsPagination
+    ProductsPagination,
   },
   computed: {
-    ...mapGetters("products", ["getProducts", "getUniqueSet", "getFilteredProducts"]),
+    ...mapGetters("products", [
+      "getProducts",
+      "getUniqueSet",
+      "getFilteredProducts",
+    ]),
     ...mapState(["availability"]),
+    products: function () {
+      const products = this.getFilteredProducts(
+        this.category,
+        this.search
+      );
+      const maxPages = Math.ceil(products.length / 100);
+      const page = this.pageProxy[this.category];
+      const minIndex = (page - 1) * 100;
+      const maxIndex = page * 100;
+      return {
+        list: products.slice(minIndex, maxIndex),
+        maxPages
+      }
+    },
   },
   methods: {
     ...mapActions(["fetchData"]),
@@ -107,7 +132,7 @@ export default {
     },
     updatePage: function (newPage) {
       this.pageProxy[this.category] = newPage;
-    }
+    },
   },
   created() {
     this.loadFetchSequence();

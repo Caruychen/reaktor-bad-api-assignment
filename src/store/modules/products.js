@@ -20,9 +20,9 @@ export default {
         }
       }).slice(minIndex, maxIndex);
     },
-    getFilteredProducts: (state) => (category, page, search) => {
-      const minIndex = page ? (page - 1) * 100 : 0;
-      const maxIndex = page ? page * 100 : undefined;
+    getFilteredProducts: (state) => (category, search) => {
+      // const minIndex = page ? (page - 1) * 100 : 0;
+      // const maxIndex = page ? page * 100 : undefined;
       return state[category].items.filter(product => {
         return Object.entries(product).every(currentProperty => {
           const searchTerm = search[currentProperty[0]];
@@ -30,7 +30,8 @@ export default {
           if (currentProperty[1].toString().includes(searchTerm)) return true
           return false
         })
-      }).slice(minIndex, maxIndex)
+      })
+      // .slice(minIndex, maxIndex)
     },
     getPages: (state, getters) => category => {
       // return Math.ceil(state[category].items.length / 100); 
