@@ -1,6 +1,13 @@
 <template>
   <td class="filter-input">
-    <input @focus="focus" @blur="blur" :list="column" type="text" v-model="search" />
+    <input
+      @focus="focus"
+      @blur="blur"
+      @input="input($event, search)"
+      :list="column"
+      type="text"
+      v-model="search"
+    />
     <datalist v-if="isSelected" :id="column">
       <option v-for="item in optionSet" :key="item" :value="item"></option>
     </datalist>
@@ -13,7 +20,7 @@ export default {
   data() {
     return {
       search: "",
-      isSelected: false
+      isSelected: false,
     };
   },
   props: {
@@ -33,7 +40,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("products", ["getUniqueSet", "getFilteredUniqueSet"]),
+    ...mapGetters("products", ["getFilteredUniqueSet"]),
     ...mapGetters("availability", ["getAllAvailability"]),
     optionSet: function () {
       return this.loadStatus
@@ -51,21 +58,27 @@ export default {
       )
         ? this.getAllAvailability(this.category)
         : "";
-    }
+    },
   },
   methods: {
-    focus: function() {
+    focus: function () {
       this.isSelected = true;
     },
-    blur: function() {
+    blur: function () {
       this.isSelected = false;
-    }
-  }
+    },
+    input(event, inputContent) {
+      this.$emit("searchInput", {
+        column: this.column,
+        inputContent
+      });
+    },
+  },
 };
 </script>
 
 <style scoped>
 input {
-  width: 95%
+  width: 95%;
 }
 </style>

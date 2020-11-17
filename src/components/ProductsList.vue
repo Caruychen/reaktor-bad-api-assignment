@@ -9,7 +9,11 @@
       <th>Color</th>
       <th>Availability</th>
     </tr>
-    <ProductsFilter :category="category" :loadStatus="loadStatus"/>
+    <ProductsFilter
+      :category="category"
+      :loadStatus="loadStatus"
+      @updateFilter="updateFilter"
+    />
     <tr
       v-for="product in getProducts(category, currentPage)"
       :key="product.index"
@@ -53,7 +57,7 @@ export default {
   },
   components: {
     BaseAvailability,
-    ProductsFilter
+    ProductsFilter,
   },
   computed: {
     ...mapGetters("products", ["getProducts", "getUniqueSet"]),
@@ -63,7 +67,7 @@ export default {
     ...mapActions(["fetchData"]),
     ...mapMutations(["initAvailabilityManufacturer"]),
     loadFetchSequence: function () {
-      const manufacturers = this.getUniqueSet(this.category, 'manufacturer');
+      const manufacturers = this.getUniqueSet(this.category, "manufacturer");
       manufacturers.forEach(async (manufacturer) => {
         if (!this.availability[manufacturer]) {
           this.initAvailabilityManufacturer(manufacturer);
@@ -87,9 +91,12 @@ export default {
     fetchAvailability: function (manufacturer) {
       return this.fetchData({
         module: "availability",
-        type: manufacturer
-      })
-    }
+        type: manufacturer,
+      });
+    },
+    updateFilter: function (searchInputs) {
+      console.log(searchInputs);
+    },
   },
   created() {
     this.loadFetchSequence();

@@ -1,12 +1,12 @@
 <template>
   <tr id="products-filter">
     <td></td>
-    <ProductsFilterInput :category="category" column="name" :maxOptions="50" />
-    <ProductsFilterInput :category="category" column="id" :maxOptions="50" />
-    <ProductsFilterInput :category="category" column="manufacturer" />
-    <ProductsFilterInput :category="category" column="price" />
-    <ProductsFilterInput :category="category" column="color" />
-    <ProductsFilterInput :category="category" column="availability" :loadStatus="loadStatus"/>
+    <ProductsFilterInput :category="category" @searchInput="collateInputs" column="name" :maxOptions="50" />
+    <ProductsFilterInput :category="category" @searchInput="collateInputs" column="id" :maxOptions="50" />
+    <ProductsFilterInput :category="category" @searchInput="collateInputs" column="manufacturer" />
+    <ProductsFilterInput :category="category" @searchInput="collateInputs" column="price" />
+    <ProductsFilterInput :category="category" @searchInput="collateInputs" column="color" />
+    <ProductsFilterInput :category="category" @searchInput="collateInputs" column="availability" :loadStatus="loadStatus"/>
   </tr>
 </template>
 
@@ -14,6 +14,11 @@
 import ProductsFilterInput from "@/components/ProductsFilterInput.vue";
 
 export default {
+  data() {
+    return {
+      searchInputs: {}
+    }
+  },
   props: {
     category: {
       type: String,
@@ -26,6 +31,12 @@ export default {
   },
   components: {
     ProductsFilterInput,
+  },
+  methods: {
+    collateInputs: function(input) {
+      this.searchInputs[input.column] = input.inputContent;
+      this.$emit("updateFilter", this.searchInputs);
+    }
   }
 };
 </script>

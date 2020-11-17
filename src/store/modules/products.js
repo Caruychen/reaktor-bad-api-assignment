@@ -7,8 +7,8 @@ export default {
   },
   getters: {
     getProducts: state => (category, page) => {
-      const minIndex = (page - 1) * 100
-      const maxIndex = page * 100;
+      const minIndex = page ? (page - 1) * 100: 0;
+      const maxIndex = page ? page * 100 : undefined;
       return state[category].items.map((item, index) => {
         return {
           index: index + 1,
@@ -20,8 +20,9 @@ export default {
         }
       }).slice(minIndex, maxIndex);
     },
-    getPages: state => category => {
-      return Math.ceil(state[category].items.length / 100);
+    getPages: (state, getters) => category => {
+      // return Math.ceil(state[category].items.length / 100); 
+      return Math.ceil(getters.getProducts(category).length / 100); 
     },
     getUniqueSet: state => (category, column) => {
       return [...new Set(state[category].items.map(item => item[column]).flat())]
