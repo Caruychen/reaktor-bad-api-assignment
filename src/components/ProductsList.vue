@@ -85,7 +85,7 @@ export default {
         this.search
       );
       const maxPages = Math.ceil(products.length / 100);
-      this.updatePage(Math.min(this.pageProxy[this.category], maxPages))
+      this.updatePage(Math.min(Math.max(this.pageProxy[this.category], 1), maxPages))
       const minIndex = (this.pageProxy[this.category] - 1) * 100;
       const maxIndex = this.pageProxy[this.category] * 100;
       return {
