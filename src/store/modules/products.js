@@ -20,22 +20,19 @@ export default {
         }
       }).slice(minIndex, maxIndex);
     },
-    getFilteredProducts: (state) => (category, search) => {
-      // const minIndex = page ? (page - 1) * 100 : 0;
-      // const maxIndex = page ? page * 100 : undefined;
+    getFilteredProducts: (state, getters, rootState, rootGetters) => (category, search) => {
       return state[category].items.filter(product => {
-        return Object.entries(product).every(currentProperty => {
+        const filteredProducts = Object.entries(product).every(currentProperty => {
           const searchTerm = search[currentProperty[0]];
           if (!searchTerm) return true
           if (currentProperty[1].toString().includes(searchTerm)) return true
           return false
         })
+        const availabilityFilter = search.availability 
+          ? rootGetters["availability/getAvailability"](product.manufacturer, product.id).includes(search.availability)
+          : true;
+        return filteredProducts && availabilityFilter
       })
-      // .slice(minIndex, maxIndex)
-    },
-    getPages: (state, getters) => category => {
-      // return Math.ceil(state[category].items.length / 100); 
-      return Math.ceil(getters.getProducts(category).length / 100);
     },
     getUniqueSet: state => (category, column) => {
       return [...new Set(state[category].items.map(item => item[column]).flat())]
