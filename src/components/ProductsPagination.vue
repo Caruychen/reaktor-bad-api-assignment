@@ -71,5 +71,6 @@ input[type="number"] {
 }
 button {
   margin: 0 1rem;
+  cursor: pointer;
 }
 </style>

@@ -6,6 +6,7 @@
       :maxPages="products.maxPages"
       @updatePage="updatePage"
     />
+    <button @click="resetFilters">Clear Search</button>
     <table id="products-list">
       <tr>
         <th>Name</th>
@@ -16,6 +17,7 @@
         <th>Availability</th>
       </tr>
       <ProductsFilter
+        ref="filter"
         :category="category"
         :manufacturerLoadStatuses="manufacturerLoadStatuses"
         @updateFilter="updateFilter"
@@ -131,6 +133,10 @@ export default {
     updatePage: function (newPage) {
       this.pageProxy[this.category] = newPage;
     },
+    resetFilters: function() {
+      this.search = {}
+      this.$refs.filter.$children.forEach(child => child.search = "")
+    }
   },
   created() {
     this.loadFetchSequence();
@@ -169,5 +175,10 @@ table tr:nth-child(even) {
 
 table tr:hover {
   background-color: #ddd;
+}
+
+button {
+  margin: 5px auto;
+  cursor: pointer;
 }
 </style>

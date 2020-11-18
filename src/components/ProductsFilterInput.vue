@@ -7,6 +7,7 @@
       :list="column"
       type="text"
       v-model="search"
+      ref="filterInput"
     />
     <datalist v-if="isSelected" :id="column">
       <option v-for="item in optionSet" :key="item" :value="item"></option>
@@ -80,7 +81,7 @@ export default {
     },
     input(event, inputContent) {
       this.$emit("searchInput", this.column, inputContent);
-    },
+    }
   },
 };
 </script>
