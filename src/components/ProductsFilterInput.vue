@@ -35,7 +35,7 @@ export default {
     maxOptions: {
       type: Number,
     },
-    isAvailabilityFilter: {
+    availabilityLoadStatus: {
       type: Object,
     },
   },
@@ -47,11 +47,14 @@ export default {
         return this.searchProxy;
       },
       set(input) {
-        this.searchProxy = this.column === "name" ? input.toUpperCase() : input;
+        this.searchProxy =
+          this.column === "name" || this.column === "availability"
+            ? input.toUpperCase()
+            : input;
       },
     },
     optionSet: function () {
-      return this.isAvailabilityFilter
+      return this.availabilityLoadStatus
         ? this.availabilityOptions
         : this.getFilteredUniqueSet(
             this.category,
@@ -61,7 +64,7 @@ export default {
           );
     },
     availabilityOptions: function () {
-      return Object.entries(this.isAvailabilityFilter).some(
+      return Object.entries(this.availabilityLoadStatus).some(
         (manufacturer) => manufacturer[1]
       )
         ? this.getAllAvailability(this.category)

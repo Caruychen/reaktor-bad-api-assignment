@@ -8,7 +8,6 @@
     />
     <table id="products-list">
       <tr>
-        <th>Index</th>
         <th>Name</th>
         <th>ID</th>
         <th>Manufacturer</th>
@@ -18,11 +17,10 @@
       </tr>
       <ProductsFilter
         :category="category"
-        :loadStatus="manufacturerIsLoaded"
+        :manufacturerLoadStatuses="manufacturerLoadStatuses"
         @updateFilter="updateFilter"
       />
-      <tr v-for="product in products.list" :key="product.index">
-        <td>{{ product.index }}</td>
+      <tr v-for="(product, index) in products.list" :key="index">
         <td>{{ product.name }}</td>
         <td>{{ product.id }}</td>
         <td>{{ product.manufacturer }}</td>
@@ -31,7 +29,7 @@
         <BaseAvailability
           :manufacturer="product.manufacturer"
           :id="product.id"
-          :isLoaded="manufacturerIsLoaded[product.manufacturer]"
+          :isLoaded="manufacturerLoadStatuses[product.manufacturer]"
         />
       </tr>
     </table>
@@ -53,7 +51,7 @@ import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 export default {
   data() {
     return {
-      manufacturerIsLoaded: {},
+      manufacturerLoadStatuses: {},
       timer: {},
       pageProxy: {
         jackets: 1,
@@ -105,20 +103,20 @@ export default {
         if (!this.availability[manufacturer]) {
           this.initAvailabilityManufacturer(manufacturer);
         }
-        this.$set(this.manufacturerIsLoaded, manufacturer, false);
+        this.$set(this.manufacturerLoadStatuses, manufacturer, false);
         if (!this.availability[manufacturer].items) {
           await this.fetchAvailability(manufacturer);
         }
-        this.manufacturerIsLoaded[manufacturer] = true;
+        this.manufacturerLoadStatuses[manufacturer] = true;
         this.timer[manufacturer] = this.setFetchInterval(manufacturer);
       });
     },
     setFetchInterval: function (manufacturer) {
       // Background refresh availability data in 5 minute intervals
       return setInterval(async () => {
-        this.manufacturerIsLoaded[manufacturer] = false;
+        this.manufacturerLoadStatuses[manufacturer] = false;
         await this.fetchAvailability(manufacturer);
-        this.manufacturerIsLoaded[manufacturer] = true;
+        this.manufacturerLoadStatuses[manufacturer] = true;
       }, 300000);
     },
     fetchAvailability: function (manufacturer) {

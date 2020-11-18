@@ -1,12 +1,38 @@
 <template>
   <tr id="products-filter">
-    <td></td>
-    <ProductsFilterInput :category="category" @searchInput="collateInputs" column="name" :maxOptions="50" />
-    <ProductsFilterInput :category="category" @searchInput="collateInputs" column="id" :maxOptions="50" />
-    <ProductsFilterInput :category="category" @searchInput="collateInputs" column="manufacturer" />
-    <ProductsFilterInput :category="category" @searchInput="collateInputs" column="price" />
-    <ProductsFilterInput :category="category" @searchInput="collateInputs" column="color" />
-    <ProductsFilterInput :category="category" @searchInput="collateInputs" column="availability" :isAvailabilityFilter="loadStatus"/>
+    <ProductsFilterInput
+      :category="category"
+      @searchInput="collateInputs"
+      column="name"
+      :maxOptions="50"
+    />
+    <ProductsFilterInput
+      :category="category"
+      @searchInput="collateInputs"
+      column="id"
+      :maxOptions="50"
+    />
+    <ProductsFilterInput
+      :category="category"
+      @searchInput="collateInputs"
+      column="manufacturer"
+    />
+    <ProductsFilterInput
+      :category="category"
+      @searchInput="collateInputs"
+      column="price"
+    />
+    <ProductsFilterInput
+      :category="category"
+      @searchInput="collateInputs"
+      column="color"
+    />
+    <ProductsFilterInput
+      :category="category"
+      @searchInput="collateInputs"
+      column="availability"
+      :availabilityLoadStatus="manufacturerLoadStatuses"
+    />
   </tr>
 </template>
 
@@ -19,7 +45,7 @@ export default {
       type: String,
       required: true,
     },
-    loadStatus: {
+    manufacturerLoadStatuses: {
       type: Object,
       required: true,
     },
@@ -28,9 +54,9 @@ export default {
     ProductsFilterInput,
   },
   methods: {
-    collateInputs: function(column, searchInput) {
+    collateInputs: function (column, searchInput) {
       this.$emit("updateFilter", column, searchInput);
-    }
-  }
+    },
+  },
 };
 </script>
