@@ -1,3 +1,5 @@
+import { parseLogic } from "@/store/helpers/helpers.js";
+
 export default {
   namespaced: true,
   state: {
@@ -10,14 +12,13 @@ export default {
       return state[category].items.filter(product => {
         const filteredProducts = Object.entries(product).every(currentProperty => {
           const searchTerm = search[currentProperty[0]];
-          return searchTerm
-            ? currentProperty[1].toString().includes(searchTerm)
-            : true;
-          // if (!searchTerm) return true
-          // if (currentProperty[1].toString().includes(searchTerm)) return true
-          // return false
+          const value = currentProperty[1];
+          if (!searchTerm) return true;
+          return currentProperty[0] === "price" 
+            ? parseLogic(value, searchTerm) 
+            : value.toString().includes(searchTerm);
         })
-        const availabilityFilter = search.availability 
+        const availabilityFilter = search.availability
           ? rootGetters["availability/getAvailability"](product.manufacturer, product.id).includes(search.availability)
           : true;
         return filteredProducts && availabilityFilter
