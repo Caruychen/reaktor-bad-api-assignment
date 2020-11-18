@@ -58,7 +58,7 @@ export default {
 
 <style scoped>
 .page-selector {
-  margin-bottom: 1rem;
+  margin: 1rem auto;
 }
 
 input[type="number"]::-webkit-inner-spin-button {
