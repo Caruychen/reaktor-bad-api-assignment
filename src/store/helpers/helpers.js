@@ -26,7 +26,7 @@ const parseLogic = (price, input) => {
     const comparison = m[1] || "==="
     const num = Number(m[2])
     const logical = m[3]
-    const test = ops[comparison](price, num)
+    const test = operator(price, num, comparison)
 
     if (logical === "&&" || logical === "&") {
       if (!test) return test

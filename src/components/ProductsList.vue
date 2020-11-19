@@ -75,21 +75,15 @@ export default {
     ProductsPagination,
   },
   computed: {
-    ...mapGetters("products", [
-      "getUniqueSet",
-      "getFilteredProducts",
-    ]),
+    ...mapGetters("products", ["getUniqueSet", "getFilteredProducts"]),
     ...mapState(["availability"]),
     products: function () {
-      return this.getFilteredProducts(
-        this.category,
-        this.search
-      );
+      return this.getFilteredProducts(this.category, this.search);
     },
-    maxPages: function() {
-      return Math.ceil(this.products.length/ 100);
+    maxPages: function () {
+      return Math.ceil(this.products.length / 100);
     },
-    productsSubArray: function() {
+    productsSubArray: function () {
       // Ensures currentPage is re-assigned within range
       this.updatePage(this.currentPage);
       const minIndex = (this.currentPage - 1) * 100;
@@ -101,9 +95,12 @@ export default {
         return this.pageProxy[this.category];
       },
       set(newPage) {
-        this.pageProxy[this.category] = Math.min(Math.max(newPage, 1), this.maxPages);
-      }
-    }
+        this.pageProxy[this.category] = Math.min(
+          Math.max(newPage, 1),
+          this.maxPages
+        );
+      },
+    },
   },
   methods: {
     ...mapActions(["fetchData"]),
@@ -112,7 +109,7 @@ export default {
       const manufacturers = this.getUniqueSet(this.category, "manufacturer");
       manufacturers.forEach(async (manufacturer) => {
         // Initialise manufacturer state data if first time fetching
-        if (!this.availability[manufacturer]) {
+        if (!(manufacturer in this.availability)) {
           this.initAvailabilityManufacturer(manufacturer);
         }
         this.$set(this.manufacturerLoadStatuses, manufacturer, false);
@@ -140,13 +137,15 @@ export default {
       });
     },
     updateSearch: function (column, searchInput) {
-      this.$set(this.search, column, searchInput);
+      column in this.search
+        ? (this.search[column] = searchInput)
+        : this.$set(this.search, column, searchInput);
     },
     updatePage: function (newPage) {
-      this.currentPage = newPage
+      this.currentPage = newPage;
     },
-    clearSearch: function() {
-      this.$refs.search.$children.forEach(child => child.search = "")
+    clearSearch: function () {
+      this.$refs.search.$children.forEach((child) => (child.search = ""));
     }
   },
   created() {
