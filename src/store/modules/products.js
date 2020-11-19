@@ -25,13 +25,17 @@ export default {
       })
     },
     getUniqueSet: state => (category, column) => {
-      return [...new Set(state[category].items.map(item => item[column]).flat())]
+      const setArray = [...new Set(state[category].items.map(item => item[column]).flat())]
+      if (column === "price") {
+        setArray.sort((a, b) => a - b);
+      }
+      return setArray
     },
     getFilteredUniqueSet: (state, getters) => (category, column, searchInput, maxOptions) => {
       const searchTerm = searchInput.toString();
       return getters.getUniqueSet(category, column)
         .filter(item => {
-          return typeof item !== "number" && item.includes(searchTerm)
+          return item.toString().includes(searchTerm);
         })
         .slice(0, maxOptions)
     }
