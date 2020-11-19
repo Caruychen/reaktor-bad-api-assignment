@@ -23,6 +23,10 @@ export default {
     ...mapState({ availabilityState: "availability" }),
     ...mapGetters("availability", ["getAvailability"]),
     availability: function () {
+      /* 
+        * isLoaded switches in during each 5 minute data refresh
+        * continue sdisplaying previous data until refresh is completed.
+      */
       const isManufacturerExists = !!this.availabilityState[this.manufacturer].items;
       return this.isLoaded
         ? this.getAvailability(this.manufacturer, this.productID)

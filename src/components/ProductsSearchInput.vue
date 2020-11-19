@@ -53,6 +53,7 @@ export default {
       },
     },
     optionSet: function () {
+      // Returns different function when retrieving availability options
       return this.availabilityLoadStatus
         ? this.availabilityOptions
         : this.getFilteredUniqueSet(
@@ -63,6 +64,7 @@ export default {
           );
     },
     availabilityOptions: function () {
+      // Return availability data once first dataset returns
       return Object.entries(this.availabilityLoadStatus).some(
         (manufacturer) => manufacturer[1]
       )
