@@ -1,5 +1,5 @@
 <template>
-  <div class="page-selector">
+  <div class="products-pagination">
     <button @click="decrementPage" type="button">Prev</button>
     <label for="page">Page</label>
     <input
@@ -19,10 +19,6 @@
 <script>
 export default {
   props: {
-    category: {
-      type: String,
-      required: true,
-    },
     pageProxy: {
       type: Number,
       required: true
@@ -57,7 +53,7 @@ export default {
 </script>
 
 <style scoped>
-.page-selector {
+.products-pagination {
   margin: 1rem auto;
 }
 

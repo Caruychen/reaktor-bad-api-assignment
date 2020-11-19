@@ -7,10 +7,6 @@ const ops = {
   "===": function (var1, var2) { return var1 === var2; },
   "!=": function (var1, var2) { return var1 != var2; },
   "!==": function (var1, var2) { return var1 !== var2; },
-  "||": function (var1, var2) { return var1 || var2; },
-  "|": function (var1, var2) { return var1 || var2; },
-  "&&": function (var1, var2) { return var1 && var2; },
-  "&": function (var1, var2) { return var1 && var2; }
 }
 
 const operator = (var1, var2, op) => {

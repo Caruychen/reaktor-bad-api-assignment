@@ -1,7 +1,9 @@
 <template>
   <div id="products">
     <h1>{{ category | capitalize }}</h1>
-    <ProductsList v-if="loadStatus[category]" :category="category" />
+    <keep-alive>
+      <ProductsList v-if="loadStatus[category]" :category="category" />
+    </keep-alive>
   </div>
 </template>
 
@@ -28,13 +30,13 @@ export default {
   components: {
     ProductsList,
   },
+  computed: {
+    ...mapState(["products"]),
+  },
   watch: {
     category() {
       this.loadProductData();
     },
-  },
-  computed: {
-    ...mapState(["products"]),
   },
   methods: {
     ...mapActions(["fetchData"]),

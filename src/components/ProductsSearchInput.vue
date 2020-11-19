@@ -1,13 +1,11 @@
 <template>
-  <td class="filter-input">
+  <td class="products-search-input">
     <input
-      @focus="focus"
-      @blur="blur"
-      @input="input($event, search)"
+      @focus="select"
+      @blur="deselect"
       :list="column"
       type="text"
       v-model="search"
-      ref="filterInput"
     />
     <datalist v-if="isSelected" :id="column">
       <option v-for="item in optionSet" :key="item" :value="item"></option>
@@ -72,15 +70,17 @@ export default {
         : "";
     },
   },
+  watch: {
+    search: function() {
+      this.$emit("searchInput", this.column, this.search);
+    }
+  },
   methods: {
-    focus: function () {
+    select: function () {
       this.isSelected = true;
     },
-    blur: function () {
+    deselect: function () {
       this.isSelected = false;
-    },
-    input(event, inputContent) {
-      this.$emit("searchInput", this.column, inputContent);
     }
   },
 };

@@ -1,13 +1,13 @@
 <template>
-  <div>
+  <div id="products-list">
     <ProductsPagination
       :category="category"
       :pageProxy="pageProxy[category]"
       :maxPages="products.maxPages"
       @updatePage="updatePage"
     />
-    <button @click="resetFilters">Clear Search</button>
-    <table id="products-list">
+    <button @click="clearSearch">Clear Search</button>
+    <table>
       <tr>
         <th>Name</th>
         <th>ID</th>
@@ -16,11 +16,11 @@
         <th>Color</th>
         <th>Availability</th>
       </tr>
-      <ProductsFilter
-        ref="filter"
+      <ProductsSearch
+        ref="search"
         :category="category"
         :manufacturerLoadStatuses="manufacturerLoadStatuses"
-        @updateFilter="updateFilter"
+        @updateSearch="updateSearch"
       />
       <tr v-for="(product, index) in products.list" :key="index">
         <td>{{ product.name }}</td>
@@ -30,7 +30,7 @@
         <td>{{ product.color.join(", ") }}</td>
         <BaseAvailability
           :manufacturer="product.manufacturer"
-          :id="product.id"
+          :productID="product.id"
           :isLoaded="manufacturerLoadStatuses[product.manufacturer]"
         />
       </tr>
@@ -46,7 +46,7 @@
 
 <script>
 import BaseAvailability from "@/components/BaseAvailability.vue";
-import ProductsFilter from "@/components/ProductsFilter.vue";
+import ProductsSearch from "@/components/ProductsSearch.vue";
 import ProductsPagination from "@/components/ProductsPagination.vue";
 import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 
@@ -71,12 +71,11 @@ export default {
   },
   components: {
     BaseAvailability,
-    ProductsFilter,
+    ProductsSearch,
     ProductsPagination,
   },
   computed: {
     ...mapGetters("products", [
-      "getProducts",
       "getUniqueSet",
       "getFilteredProducts",
     ]),
@@ -102,10 +101,13 @@ export default {
     loadFetchSequence: function () {
       const manufacturers = this.getUniqueSet(this.category, "manufacturer");
       manufacturers.forEach(async (manufacturer) => {
+        // Initialise manufacturer state data if first time fetching
         if (!this.availability[manufacturer]) {
           this.initAvailabilityManufacturer(manufacturer);
         }
         this.$set(this.manufacturerLoadStatuses, manufacturer, false);
+
+        // Fetch manufacturer data if absent, and set refresh interval
         if (!this.availability[manufacturer].items) {
           await this.fetchAvailability(manufacturer);
         }
@@ -127,15 +129,14 @@ export default {
         type: manufacturer,
       });
     },
-    updateFilter: function (column, searchInput) {
+    updateSearch: function (column, searchInput) {
       this.$set(this.search, column, searchInput);
     },
     updatePage: function (newPage) {
       this.pageProxy[this.category] = newPage;
     },
-    resetFilters: function() {
-      this.search = {}
-      this.$refs.filter.$children.forEach(child => child.search = "")
+    clearSearch: function() {
+      this.$refs.search.$children.forEach(child => child.search = "")
     }
   },
   created() {

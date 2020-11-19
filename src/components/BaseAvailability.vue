@@ -10,7 +10,7 @@ export default {
       type: String,
       required: true,
     },
-    id: {
+    productID: {
       type: String,
       required: true,
     },
@@ -25,9 +25,9 @@ export default {
     availability: function () {
       const isManufacturerExists = !!this.availabilityState[this.manufacturer].items;
       return this.isLoaded
-        ? this.getAvailability(this.manufacturer, this.id)
+        ? this.getAvailability(this.manufacturer, this.productID)
         : isManufacturerExists
-          ? this.getAvailability(this.manufacturer, this.id)
+          ? this.getAvailability(this.manufacturer, this.productID)
           : "loading...";
     },
   },

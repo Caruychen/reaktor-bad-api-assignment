@@ -1,37 +1,13 @@
 <template>
-  <tr id="products-filter">
+  <tr id="products-search">
     <ProductsSearchInput
+      v-for="input in inputsArray"
+      :key="input.column"
       :category="category"
+      :column="input.column"
+      :maxOptions="input.maxOptions"
+      :availabilityLoadStatus="input.availabilityLoadStatus"
       @searchInput="collateInputs"
-      column="name"
-      :maxOptions="50"
-    />
-    <ProductsSearchInput
-      :category="category"
-      @searchInput="collateInputs"
-      column="id"
-      :maxOptions="50"
-    />
-    <ProductsSearchInput
-      :category="category"
-      @searchInput="collateInputs"
-      column="manufacturer"
-    />
-    <ProductsSearchInput
-      :category="category"
-      @searchInput="collateInputs"
-      column="price"
-    />
-    <ProductsSearchInput
-      :category="category"
-      @searchInput="collateInputs"
-      column="color"
-    />
-    <ProductsSearchInput
-      :category="category"
-      @searchInput="collateInputs"
-      column="availability"
-      :availabilityLoadStatus="manufacturerLoadStatuses"
     />
   </tr>
 </template>
@@ -40,6 +16,21 @@
 import ProductsSearchInput from "@/components/ProductsSearchInput.vue";
 
 export default {
+  data() {
+    return {
+      inputsArray: [
+        { column: "name", maxOptions: 50 },
+        { column: "id", maxOptions: 50 },
+        { column: "manufacturer" },
+        { column: "price" },
+        { column: "color" },
+        {
+          column: "availability",
+          availabilityLoadStatus: this.manufacturerLoadStatuses,
+        },
+      ],
+    };
+  },
   props: {
     category: {
       type: String,
@@ -55,7 +46,7 @@ export default {
   },
   methods: {
     collateInputs: function (column, searchInput) {
-      this.$emit("updateFilter", column, searchInput);
+      this.$emit("updateSearch", column, searchInput);
     },
   },
 };
