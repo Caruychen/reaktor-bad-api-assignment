@@ -13,19 +13,23 @@ export default {
       if (Object.values(search).every(value => value === undefined || value === "")) {
         return state[category].items
       }
+      // Filter tests product properties and availability against search inputs
       return state[category].items.filter(product => {
-        const filteredProducts = Object.entries(product).every(currentProperty => {
-          const searchTerm = search[currentProperty[0]];
-          const value = currentProperty[1];
-          if (!searchTerm) return true
+
+        const productTest = Object.entries(product).every(currentProperty => {
+          const searchInput = search[currentProperty[0]];
+          const propValue = currentProperty[1];
+          if (!searchInput) return true
           return currentProperty[0] === "price"
-            ? parseLogic(value, searchTerm)
-            : value.toString().includes(searchTerm);
+            ? parseLogic(propValue, searchInput)
+            : propValue.toString().includes(searchInput);
         })
-        const availabilityFilter = search.availability
+
+        const availabilityTest = search.availability
           ? rootGetters["availability/getAvailability"](product.manufacturer, product.id).includes(search.availability)
           : true;
-        return filteredProducts && availabilityFilter
+        
+        return productTest && availabilityTest
       })
     },
     getUniqueSet: state => (category, column) => {
@@ -38,7 +42,7 @@ export default {
     getFilteredUniqueSet: (state, getters) => (category, column, searchInput, maxOptions) => {
       const setArray = getters.getUniqueSet(category, column);
       if (searchInput === "") return setArray.slice(0, maxOptions);
-      // Re-evaluate set array filter where items exceed maximum options
+      // Where items exceed maximum option size, array filter needs to be re-evaluated upon input
       return setArray.filter(item => {
         return item.toString().includes(searchInput);
       }).slice(0, maxOptions)

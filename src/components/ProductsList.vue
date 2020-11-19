@@ -77,18 +77,29 @@ export default {
   computed: {
     ...mapGetters("products", ["getUniqueSet", "getFilteredProducts"]),
     ...mapState(["availability"]),
-    products: function () {
-      return this.getFilteredProducts(this.category, this.search);
+    /*
+      * Separate computed properties for each category allows caching of the
+      * current search inputs. 
+      * This allows quick page changes with the same search inputs.
+    */
+    jackets: function () {
+      return this.getFilteredProducts("jackets", this.search);
+    },
+    shirts: function () {
+      return this.getFilteredProducts("shirts", this.search);
+    },
+    accessories: function () {
+      return this.getFilteredProducts("accessories", this.search);
     },
     maxPages: function () {
-      return Math.ceil(this.products.length / 100);
+      return Math.ceil(this[this.category].length / 100);
     },
     productsSubArray: function () {
       // Ensures currentPage is re-assigned within range
       this.updatePage(this.currentPage);
       const minIndex = (this.currentPage - 1) * 100;
       const maxIndex = this.currentPage * 100;
-      return this.products.slice(minIndex, maxIndex);
+      return this[this.category].slice(minIndex, maxIndex);
     },
     currentPage: {
       get() {
@@ -146,7 +157,7 @@ export default {
     },
     clearSearch: function () {
       this.$refs.search.$children.forEach((child) => (child.search = ""));
-    }
+    },
   },
   created() {
     this.loadFetchSequence();

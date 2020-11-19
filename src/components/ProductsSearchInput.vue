@@ -40,7 +40,7 @@ export default {
   },
   computed: {
     ...mapGetters("products", ["getFilteredUniqueSet"]),
-    ...mapGetters("availability", ["getAllAvailability"]),
+    ...mapGetters("availability", ["getAvailabilitySet"]),
     search: {
       get() {
         return this.searchProxy;
@@ -68,7 +68,7 @@ export default {
       return Object.entries(this.availabilityLoadStatus).some(
         (manufacturer) => manufacturer[1]
       )
-        ? this.getAllAvailability(this.category)
+        ? this.getAvailabilitySet(this.category)
         : "";
     },
   },
