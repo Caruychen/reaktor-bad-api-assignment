@@ -1,33 +1,33 @@
 <template>
   <tr id="products-filter">
-    <ProductsFilterInput
+    <ProductsSearchInput
       :category="category"
       @searchInput="collateInputs"
       column="name"
       :maxOptions="50"
     />
-    <ProductsFilterInput
+    <ProductsSearchInput
       :category="category"
       @searchInput="collateInputs"
       column="id"
       :maxOptions="50"
     />
-    <ProductsFilterInput
+    <ProductsSearchInput
       :category="category"
       @searchInput="collateInputs"
       column="manufacturer"
     />
-    <ProductsFilterInput
+    <ProductsSearchInput
       :category="category"
       @searchInput="collateInputs"
       column="price"
     />
-    <ProductsFilterInput
+    <ProductsSearchInput
       :category="category"
       @searchInput="collateInputs"
       column="color"
     />
-    <ProductsFilterInput
+    <ProductsSearchInput
       :category="category"
       @searchInput="collateInputs"
       column="availability"
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import ProductsFilterInput from "@/components/ProductsFilterInput.vue";
+import ProductsSearchInput from "@/components/ProductsSearchInput.vue";
 
 export default {
   props: {
@@ -51,7 +51,7 @@ export default {
     },
   },
   components: {
-    ProductsFilterInput,
+    ProductsSearchInput,
   },
   methods: {
     collateInputs: function (column, searchInput) {
