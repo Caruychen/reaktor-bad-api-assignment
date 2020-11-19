@@ -28,7 +28,7 @@
         <td>{{ product.manufacturer }}</td>
         <td>{{ product.price }}</td>
         <td>{{ product.color.join(", ") }}</td>
-        <BaseAvailability
+        <Availability
           :manufacturer="product.manufacturer"
           :productID="product.id"
           :isLoaded="manufacturerLoadStatuses[product.manufacturer]"
@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import BaseAvailability from "@/components/BaseAvailability.vue";
+import Availability from "@/components/Availability.vue";
 import ProductsSearch from "@/components/ProductsSearch.vue";
 import ProductsPagination from "@/components/ProductsPagination.vue";
 import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
@@ -70,7 +70,7 @@ export default {
     },
   },
   components: {
-    BaseAvailability,
+    Availability,
     ProductsSearch,
     ProductsPagination,
   },
