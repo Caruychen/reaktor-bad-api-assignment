@@ -25,7 +25,7 @@ export default {
     availability: function () {
       /* 
         * isLoaded switches in during each 5 minute data refresh
-        * continue sdisplaying previous data until refresh is completed.
+        * continues displaying previous data until refresh is completed.
       */
       const isManufacturerExists = !!this.availabilityState[this.manufacturer].items;
       return this.isLoaded
