@@ -2,8 +2,8 @@
   <div id="products-list">
     <ProductsPagination
       :category="category"
-      :pageProxy="pageProxy[category]"
-      :maxPages="products.maxPages"
+      :pageProxy="currentPage"
+      :maxPages="maxPages"
       @updatePage="updatePage"
     />
     <button @click="clearSearch">Clear Search</button>
@@ -22,7 +22,7 @@
         :manufacturerLoadStatuses="manufacturerLoadStatuses"
         @updateSearch="updateSearch"
       />
-      <tr v-for="(product, index) in products.list" :key="index">
+      <tr v-for="(product, index) in productsSubArray" :key="index">
         <td>{{ product.name }}</td>
         <td>{{ product.id }}</td>
         <td>{{ product.manufacturer }}</td>
@@ -37,8 +37,8 @@
     </table>
     <ProductsPagination
       :category="category"
-      :pageProxy="pageProxy[category]"
-      :maxPages="products.maxPages"
+      :pageProxy="currentPage"
+      :maxPages="maxPages"
       @updatePage="updatePage"
     />
   </div>
@@ -81,19 +81,29 @@ export default {
     ]),
     ...mapState(["availability"]),
     products: function () {
-      const products = this.getFilteredProducts(
+      return this.getFilteredProducts(
         this.category,
         this.search
       );
-      const maxPages = Math.ceil(products.length / 100);
-      this.updatePage(Math.min(Math.max(this.pageProxy[this.category], 1), maxPages))
-      const minIndex = (this.pageProxy[this.category] - 1) * 100;
-      const maxIndex = this.pageProxy[this.category] * 100;
-      return {
-        list: products.slice(minIndex, maxIndex),
-        maxPages
-      }
     },
+    maxPages: function() {
+      return Math.ceil(this.products.length/ 100);
+    },
+    productsSubArray: function() {
+      // Ensures currentPage is re-assigned within range
+      this.updatePage(this.currentPage);
+      const minIndex = (this.currentPage - 1) * 100;
+      const maxIndex = this.currentPage * 100;
+      return this.products.slice(minIndex, maxIndex);
+    },
+    currentPage: {
+      get() {
+        return this.pageProxy[this.category];
+      },
+      set(newPage) {
+        this.pageProxy[this.category] = Math.min(Math.max(newPage, 1), this.maxPages);
+      }
+    }
   },
   methods: {
     ...mapActions(["fetchData"]),
@@ -133,7 +143,7 @@ export default {
       this.$set(this.search, column, searchInput);
     },
     updatePage: function (newPage) {
-      this.pageProxy[this.category] = newPage;
+      this.currentPage = newPage
     },
     clearSearch: function() {
       this.$refs.search.$children.forEach(child => child.search = "")

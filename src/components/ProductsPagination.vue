@@ -34,7 +34,7 @@ export default {
         return this.pageProxy;
       },
       set(page) {
-        if (page) this.$emit("updatePage", this.clampPages(page));
+        if (page) this.$emit("updatePage", page);
       },
     },
   },
@@ -44,9 +44,6 @@ export default {
     },
     decrementPage: function () {
       this.currentPage--;
-    },
-    clampPages: function(newPage) {
-      return Math.min(Math.max(newPage, 1), this.maxPages);
     }
   }
 };
