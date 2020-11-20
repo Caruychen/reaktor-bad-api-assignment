@@ -55,7 +55,7 @@ export default {
     optionSet: function () {
       // Returns different function when retrieving availability options
       return this.availabilityLoadStatus
-        ? this.availabilityOptions
+        ? this[`${this.category}Availability`]
         : this.getFilteredUniqueSet(
             this.category,
             this.column,
@@ -63,19 +63,21 @@ export default {
             this.maxOptions
           );
     },
-    availabilityOptions: function () {
-      // Return availability data once first dataset returns
-      return Object.entries(this.availabilityLoadStatus).some(
-        (manufacturer) => manufacturer[1]
-      )
-        ? this.getAvailabilitySet(this.category)
-        : "";
-    },
   },
   watch: {
-    search: function() {
+    search: function () {
       this.$emit("searchInput", this.column, this.search);
-    }
+    },
+    /*
+     * Compute availabilities immediated on availability data update.
+     * Auto-complete datalist shows faster when user first clicks
+     */
+    availabilityLoadStatus: {
+      handler() {
+        this[`${this.category}Availability`];
+      },
+      deep: true,
+    },
   },
   methods: {
     select: function () {
@@ -83,7 +85,21 @@ export default {
     },
     deselect: function () {
       this.isSelected = false;
-    }
+    },
+  },
+  created() {
+    // Create computed properties for each category on the fly
+    const keys = ["jackets", "shirts", "accessories"];
+    keys.forEach((key) => {
+      this.$options.computed[`${key}Availability`] = function () {
+        // Possible availabilities list will update as data changes
+        return Object.entries(this.availabilityLoadStatus).some(
+          (manufacturer) => manufacturer[1]
+        )
+          ? this.getAvailabilitySet(key)
+          : "";
+      };
+    });
   },
 };
 </script>
