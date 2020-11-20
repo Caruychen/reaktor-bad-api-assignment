@@ -34,9 +34,11 @@ export default {
     },
     getUniqueSet: state => (category, column) => {
       const setArray = [...new Set(state[category].items.map(item => item[column]).flat())]
-      if (column === "price") {
-        setArray.sort((a, b) => a - b);
-      }
+      setArray.sort((a, b) => {
+        if (a < b) return -1
+        if (a > b) return 1
+        return 0
+      });
       return setArray
     },
     getFilteredUniqueSet: (state, getters) => (category, column, searchInput, maxOptions) => {
