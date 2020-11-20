@@ -1,5 +1,10 @@
 import { badApiHTTP } from "@/service/index.js";
 
+/* 
+  * Returns a fetch promise to any simultaneous calls to the same
+  * endpoint. Only the first fetch call is dispatched, subsequent
+  * calls to the same endpoint receive a promise from the first call.
+*/
 const fetchData = ({ state, commit, dispatch }, { module, type }) => {
   const data = state[module][type]
   if (data.isFetching) {

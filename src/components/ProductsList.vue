@@ -74,9 +74,8 @@ export default {
     ...mapGetters("products", ["getUniqueSet", "getFilteredProducts"]),
     ...mapState(["availability"]),
     /*
-      * Separate computed properties for each category allows caching of the
-      * current search inputs. 
-      * This allows quick page changes with the same search inputs.
+      * Separate computed properties for each category caches current search 
+      * inputs for quick page changes with the same search inputs.
     */
     jackets: function () {
       return this.getFilteredProducts("jackets", this.search);
@@ -114,14 +113,17 @@ export default {
     ...mapMutations(["initAvailabilityManufacturer"]),
     loadFetchSequence: function () {
       const manufacturers = this.getUniqueSet(this.category, "manufacturer");
+      /* 
+        * Fetch sequence initiates manufacturer state data and sets 
+        * a 5 minute interval for re-fetching manufacturer data to
+        * keep a live track of changes to product availability.
+      */
       manufacturers.forEach(async (manufacturer) => {
-        // Initialise manufacturer state data if first time fetching
         if (!(manufacturer in this.availability)) {
           this.initAvailabilityManufacturer(manufacturer);
         }
-        this.$set(this.manufacturerLoadStatuses, manufacturer, false);
 
-        // Fetch manufacturer data if absent, and set refresh interval
+        this.$set(this.manufacturerLoadStatuses, manufacturer, false);
         if (!this.availability[manufacturer].items) {
           await this.fetchAvailability(manufacturer);
         }
@@ -130,7 +132,6 @@ export default {
       });
     },
     setFetchInterval: function (manufacturer) {
-      // Background refresh availability data in 5 minute intervals
       return setInterval(async () => {
         this.manufacturerLoadStatuses[manufacturer] = false;
         await this.fetchAvailability(manufacturer);

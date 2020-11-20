@@ -13,7 +13,10 @@ export default {
       if (Object.values(search).every(value => value === undefined || value === "")) {
         return state[category].items
       }
-      // Filter tests product properties and availability against search inputs
+      /*
+        * Filter separately tests product properties and availability
+        * against search inputs
+      */
       return state[category].items.filter(product => {
 
         const productTest = Object.entries(product).every(currentProperty => {
@@ -44,9 +47,13 @@ export default {
     getFilteredUniqueSet: (state, getters) => (category, column, searchInput, maxOptions) => {
       const setArray = getters.getUniqueSet(category, column);
       if (searchInput === "") return setArray.slice(0, maxOptions);
-      // Where items exceed maximum option size, array filter needs to be re-evaluated upon input
+      /*
+        * Where items exceed maximum option size, re-evaluate filter on each input update.
+        * Datalist works as an auto-complete showing results that start with searched
+        * characters.
+      */
       return setArray.filter(item => {
-        return item.toString().includes(searchInput);
+        return item.toString().startsWith(searchInput);
       }).slice(0, maxOptions)
     }
   }
