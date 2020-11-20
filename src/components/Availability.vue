@@ -1,5 +1,5 @@
 <template>
-  <td :class="availability.toString().toLowerCase()">{{ availability }}</td>
+  <td :class="availability.toLowerCase()">{{ availability }}</td>
 </template>
 
 <script>
