@@ -1,0 +1,14 @@
+{
+  "name": "caruy-api-assignment",
+  "version": "1.0.0",
+  "description": "solution to bad api assignment from Reaktor",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Caruy Chen",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
