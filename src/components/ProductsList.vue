@@ -73,19 +73,6 @@ export default {
   computed: {
     ...mapGetters("products", ["getUniqueSet", "getFilteredProducts"]),
     ...mapState(["availability"]),
-    /*
-      * Separate computed properties for each category caches current search 
-      * inputs for quick page changes with the same search inputs.
-    */
-    jackets: function () {
-      return this.getFilteredProducts("jackets", this.search);
-    },
-    shirts: function () {
-      return this.getFilteredProducts("shirts", this.search);
-    },
-    accessories: function () {
-      return this.getFilteredProducts("accessories", this.search);
-    },
     maxPages: function () {
       return Math.ceil(this[this.category].length / 100);
     },
@@ -101,10 +88,7 @@ export default {
         return this.pageProxy;
       },
       set(newPage) {
-        this.pageProxy = Math.min(
-          Math.max(newPage, 1),
-          this.maxPages
-        );
+        this.pageProxy = Math.min(Math.max(newPage, 1), this.maxPages);
       },
     },
   },
@@ -113,11 +97,11 @@ export default {
     ...mapMutations(["initAvailabilityManufacturer"]),
     loadFetchSequence: function () {
       const manufacturers = this.getUniqueSet(this.category, "manufacturer");
-      /* 
-        * Fetch sequence initiates manufacturer state data and sets 
-        * a 5 minute interval for re-fetching manufacturer data to
-        * keep a live track of changes to product availability.
-      */
+      /*
+       * Fetch sequence initiates manufacturer state data and sets
+       * a 5 minute interval for re-fetching manufacturer data to
+       * keep a live track of changes to product availability.
+       */
       manufacturers.forEach(async (manufacturer) => {
         if (!(manufacturer in this.availability)) {
           this.initAvailabilityManufacturer(manufacturer);
@@ -149,12 +133,25 @@ export default {
         ? (this.search[column] = searchInput)
         : this.$set(this.search, column, searchInput);
     },
-    updatePage: function (newPage) {
-      this.currentPage = newPage;
-    },
     clearSearch: function () {
       this.$refs.search.$children.forEach((child) => (child.search = ""));
     },
+    updatePage: function (newPage) {
+      this.currentPage = newPage;
+    },
+  },
+  beforeCreate() {
+    /*
+     * Create separate computed properties for each category
+     * Results to current search inputs cached to allow quick page changes.
+     * Executed before dependent computed properties are set up.
+     */
+    const keys = ["jackets", "shirts", "accessories"];
+    keys.forEach((key) => {
+      this.$options.computed[key] = function () {
+        return this.getFilteredProducts(key, this.search);
+      };
+    });
   },
   created() {
     this.loadFetchSequence();

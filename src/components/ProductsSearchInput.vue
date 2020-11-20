@@ -87,7 +87,7 @@ export default {
       this.isSelected = false;
     },
   },
-  created() {
+  beforeCreate() {
     // Create computed properties for each category on the fly
     const keys = ["jackets", "shirts", "accessories"];
     keys.forEach((key) => {
@@ -100,7 +100,7 @@ export default {
           : "";
       };
     });
-  },
+  }
 };
 </script>
 
