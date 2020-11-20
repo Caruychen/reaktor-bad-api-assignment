@@ -73,15 +73,15 @@ export default {
   computed: {
     ...mapGetters("products", ["getUniqueSet", "getFilteredProducts"]),
     ...mapState(["availability"]),
-    maxPages: function () {
-      return Math.ceil(this[this.category].length / 100);
-    },
     productsSubArray: function () {
       // Ensures currentPage is re-assigned within range
       this.updatePage(this.currentPage);
       const minIndex = (this.currentPage - 1) * 100;
       const maxIndex = this.currentPage * 100;
       return this[this.category].slice(minIndex, maxIndex);
+    },
+    maxPages: function () {
+      return Math.ceil(this[this.category].length / 100);
     },
     currentPage: {
       get() {
