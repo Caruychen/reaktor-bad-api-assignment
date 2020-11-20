@@ -55,11 +55,7 @@ export default {
     return {
       manufacturerLoadStatuses: {},
       timer: {},
-      pageProxy: {
-        jackets: 1,
-        shirts: 1,
-        accessories: 1,
-      },
+      pageProxy: 1,
       search: {},
     };
   },
@@ -103,10 +99,10 @@ export default {
     },
     currentPage: {
       get() {
-        return this.pageProxy[this.category];
+        return this.pageProxy;
       },
       set(newPage) {
-        this.pageProxy[this.category] = Math.min(
+        this.pageProxy = Math.min(
           Math.max(newPage, 1),
           this.maxPages
         );
