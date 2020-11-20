@@ -1,9 +1,13 @@
-const express = require("express");
-
+const express = require('express');
+const path = require('path');
+const cors = require('cors')
 const app = express();
 
 // Server static folder
-app.use(express.static(__dirname + '/public'));
+app
+  .use(express.static(__dirname + '/public'))
+  .use(cors());
+
 
 // Handle SPA
 app.get(/.*/, (req, res) => {
