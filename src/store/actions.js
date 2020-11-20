@@ -6,18 +6,18 @@ import { badApiHTTP } from "@/service/index.js";
   * calls to the same endpoint receive a promise from the first call.
 */
 const fetchData = ({ state, commit, dispatch }, { module, type }) => {
-  const data = state[module][type]
+  const data = state[module][type];
   if (data.isFetching) {
-    return data.fetchCall
+    return data.fetchCall;
   }
-  commit("setIsFetching", { module, type, isFetching: true })
+  commit("setIsFetching", { module, type, isFetching: true });
   const call = dispatch("callback", { module, type });
   commit("setCall", {
     module,
     type,
     call
-  })
-  return call
+  });
+  return call;
 }
 
 const callback = async ({ commit }, { module, type }) => {
@@ -29,7 +29,7 @@ const callback = async ({ commit }, { module, type }) => {
       data: response.data.response || response.data
     })
   }
-  commit("setIsFetching", { module, type, isFetching: false })
+  commit("setIsFetching", { module, type, isFetching: false });
   commit("setCall", {
     module,
     type,

@@ -11,7 +11,7 @@ export default {
     getFilteredProducts: (state, getters, rootState, rootGetters) => (category, search) => {
       // Avoid filtering with empty search inputs
       if (Object.values(search).every(value => value === undefined || value === "")) {
-        return state[category].items
+        return state[category].items;
       }
       /*
         * Filter separately tests product properties and availability
@@ -22,7 +22,7 @@ export default {
         const productTest = Object.entries(product).every(currentProperty => {
           const searchInput = search[currentProperty[0]];
           const propValue = currentProperty[1];
-          if (!searchInput) return true
+          if (!searchInput) return true;
           return currentProperty[0] === "price"
             ? parseLogic(propValue, searchInput)
             : propValue.toString().includes(searchInput);
@@ -32,17 +32,17 @@ export default {
           ? rootGetters["availability/getAvailability"](product.manufacturer, product.id).includes(search.availability)
           : true;
         
-        return productTest && availabilityTest
+        return productTest && availabilityTest;
       })
     },
     getUniqueSet: state => (category, column) => {
-      const setArray = [...new Set(state[category].items.map(item => item[column]).flat())]
+      const setArray = [...new Set(state[category].items.map(item => item[column]).flat())];
       setArray.sort((a, b) => {
-        if (a < b) return -1
-        if (a > b) return 1
-        return 0
+        if (a < b) return -1;
+        if (a > b) return 1;
+        return 0;
       });
-      return setArray
+      return setArray;
     },
     getFilteredUniqueSet: (state, getters) => (category, column, searchInput, maxOptions) => {
       const setArray = getters.getUniqueSet(category, column);
@@ -54,7 +54,7 @@ export default {
       */
       return setArray.filter(item => {
         return item.toString().startsWith(searchInput);
-      }).slice(0, maxOptions)
+      }).slice(0, maxOptions);
     }
   }
 }

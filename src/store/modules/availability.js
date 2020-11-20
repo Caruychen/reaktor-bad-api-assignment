@@ -3,14 +3,14 @@ export default {
   state: {},
   getters: {
     getAvailability: state => (manufacturer, id) => {
-      if (!state[manufacturer].items) return "DATA NOT FOUND"
+      if (!state[manufacturer].items) return "DATA NOT FOUND";
       return state[manufacturer].items.find(item => {
-        return item.id.toLowerCase() === id
+        return item.id.toLowerCase() === id;
       }).DATAPAYLOAD.match(/(?<=INSTOCKVALUE>)\w*/)[0];
     },
     getAvailabilitySet: (state, getters, rootState) => (category) => {
       return [... new Set(rootState.products[category].items.map(item => {
-        return getters.getAvailability(item.manufacturer, item.id)
+        return getters.getAvailability(item.manufacturer, item.id);
       }))]
     }
   }

@@ -3,11 +3,11 @@ const initAvailabilityManufacturer = (state, manufacturer) => {
     items: null,
     isFetching: false,
     fetchCall: null
-  }
+  };
 }
 
 const setData = (state, payload) => {
-  state[payload.module][payload.type].items = payload.data
+  state[payload.module][payload.type].items = payload.data;
 }
 const setIsFetching = (state, payload) => {
   state[payload.module][payload.type].isFetching = payload.isFetching;
