@@ -35,22 +35,22 @@ export default {
   },
   watch: {
     category() {
-      this.loadProductData();
+      this.loadProductData(this.category);
     },
   },
   methods: {
     ...mapActions(["fetchData"]),
-    loadProductData: async function () {
-      this.loadStatus[this.category] =
-        !!this.products[this.category].items ||
+    loadProductData: async function (category) {
+      this.loadStatus[category] =
+        !!this.products[category].items ||
         !!(await this.fetchData({
           module: "products",
-          type: this.category,
+          type: category,
         }));
     },
   },
   created() {
-    this.loadProductData();
+    this.loadProductData(this.category);
   },
 };
 </script>
