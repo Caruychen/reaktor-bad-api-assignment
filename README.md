@@ -1,4 +1,5 @@
-# API Assignment (Warehouse Listing App) - https://caruy-api-assignment.herokuapp.com
+# API Assignment (Warehouse Listing App)
+link: https://caruy-api-assignment.herokuapp.com
 This web application provides a simple product listing UI for warehouse workers at a hypothetical clothing brand.
 It prioritieses ease of use for staff by allowing for fast and intuitive switching between product categories, 
 and the ability to filter products using search inputs. 
