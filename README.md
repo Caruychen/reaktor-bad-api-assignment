@@ -41,7 +41,7 @@ Users can search for a specific product or group of products by intering informa
 
 Search inputs persist through product category changes, so users can easily and quickly check with the same filters across the categories (jackets, shirts, accessories). For instance, a user can check which jackets from the manufacturer Derp is out of stock, and then easily check the same for shirts and accessories without re-entering the same search input. 
 
-![filter1](https://i.ibb.co/RB7YkWs/filter-screenshot-1.png)
+<img src="https://i.ibb.co/RB7YkWs/filter-screenshot-1.png)" width="100">
 ![filter2](https://i.ibb.co/YB7byy3/filter-screenshot-2.png)
 ![filter3](https://i.ibb.co/d0RnND3/filter-screenshot-3.png)
 
