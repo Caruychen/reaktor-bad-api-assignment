@@ -41,9 +41,9 @@ Users can search for a specific product or group of products by intering informa
 
 Search inputs persist through product category changes, so users can easily and quickly check with the same filters across the categories (jackets, shirts, accessories). For instance, a user can check which jackets from the manufacturer "Derp" is OUTOFSTOCK, and then easily check the same for shirts and accessories without re-entering the same search input. 
 
-<a href="https://ibb.co/SdJ54pM"><img src="https://i.ibb.co/0FQmR36/filter-screenshot-1.png" alt="filter-screenshot-1" width="280" border="0"></a>
-<a href="https://ibb.co/XxZV33b"><img src="https://i.ibb.co/tpM3xx4/filter-screenshot-2.png" alt="filter-screenshot-2" width="280" border="0"></a>
-<a href="https://ibb.co/XZqmntd"><img src="https://i.ibb.co/Y7xv5hK/filter-screenshot-3.png" alt="filter-screenshot-3" width="280" border="0"></a>
+<a href="https://ibb.co/ScVf7ms"><img src="https://i.ibb.co/tzYLP2m/filter-screenshot-1.png" alt="filter-screenshot-1" border="0"></a>
+<a href="https://ibb.co/Jd2bnnD"><img src="https://i.ibb.co/Qcnq99y/filter-screenshot-2.png" alt="filter-screenshot-2" border="0"></a>
+<a href="https://ibb.co/vZ50s8p"><img src="https://i.ibb.co/2g2G8Bx/filter-screenshot-3.png" alt="filter-screenshot-3" border="0"></a>
 Caveat: Searching with availability information takes slightly longer to compute than for other categories for information. However, the results for current search inputs are cached for a product once it is opened. So subsequent product category switches with the same search inputs load faster. 
 
 #### Search auto-complete
