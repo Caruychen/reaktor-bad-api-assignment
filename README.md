@@ -48,12 +48,12 @@ Each product search input provides a auto-complete dropdown list that updates wi
 
 #### Basic price filtering
 In addition to searching for specific prices, basic numeric filtering options are available. Users are able to filter prices based on:
-* Greater than: >
-* Less than: <
-* Greater than or equal to: >=
-* Less than or equal to: <=
-* Equal to: ==
-* Not equal to: !=
+* Greater than: `>`
+* Less than: `<`
+* Greater than or equal to: `>=`
+* Less than or equal to: `<=`
+* Equal to: `==`
+* Not equal to: `!=`
 
 Users can also filter with up to 2 conditions using the logical & and | inputs.
 
