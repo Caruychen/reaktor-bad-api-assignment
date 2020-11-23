@@ -39,11 +39,11 @@ The availability of a product is indicated with text and background colors: INST
 ### Filter and search multiple product info types
 Users can search for a specific product or group of products by intering information at the top of the product lists. An input box is provided for each category of information, so users can search using multiple information columns or a single column.
 
-Search inputs persist through product category changes, so users can easily and quickly check with the same filters across the categories (jackets, shirts, accessories). For instance, a user can check which jackets from the manufacturer Derp is out of stock, and then easily check the same for shirts and accessories without re-entering the same search input. 
+Search inputs persist through product category changes, so users can easily and quickly check with the same filters across the categories (jackets, shirts, accessories). For instance, a user can check which jackets from the manufacturer "Derp" is OUTOFSTOCK, and then easily check the same for shirts and accessories without re-entering the same search input. 
 
-<a href="https://ibb.co/SdJ54pM"><img src="https://i.ibb.co/0FQmR36/filter-screenshot-1.png" alt="filter-screenshot-1" width="300" border="0"></a>
-<a href="https://ibb.co/XxZV33b"><img src="https://i.ibb.co/tpM3xx4/filter-screenshot-2.png" alt="filter-screenshot-2" width="300" border="0"></a>
-<a href="https://ibb.co/XZqmntd"><img src="https://i.ibb.co/Y7xv5hK/filter-screenshot-3.png" alt="filter-screenshot-3" width="300" border="0"></a>
+<a href="https://ibb.co/SdJ54pM"><img src="https://i.ibb.co/0FQmR36/filter-screenshot-1.png" alt="filter-screenshot-1" width="280" border="0"></a>
+<a href="https://ibb.co/XxZV33b"><img src="https://i.ibb.co/tpM3xx4/filter-screenshot-2.png" alt="filter-screenshot-2" width="280" border="0"></a>
+<a href="https://ibb.co/XZqmntd"><img src="https://i.ibb.co/Y7xv5hK/filter-screenshot-3.png" alt="filter-screenshot-3" width="280" border="0"></a>
 Caveat: Searching with availability information takes slightly longer to compute than for other categories for information. However, the results for current search inputs are cached for a product once it is opened. So subsequent product category switches with the same search inputs load faster. 
 
 #### Search auto-complete
