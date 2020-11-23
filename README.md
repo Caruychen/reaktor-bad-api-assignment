@@ -21,8 +21,8 @@ Built using:
 ## Features
 ### Easy page selection
 Users can easily switch between product categories at any time with sticky navigation buttons at the top of the page. The highlighted button indicates the current product category that the user is viewing.
-<a href="https://i.ibb.co/kmTzn4r"><img src="https://i.ibb.co/kmTzn4r/assignment-screenshot-1.jpg" alt="page-screenshot" width="500" border="0"></a>
-<a href="https://ibb.co/q7jPvR6"><img src="https://i.ibb.co/QpQ1460/page-screenshot.png" alt="page-screenshot" width="500" border="0"></a>
+<a href="https://i.ibb.co/kmTzn4r"><img src="https://i.ibb.co/kmTzn4r/assignment-screenshot-1.jpg" alt="page-screenshot" width="400" border="0"></a>
+<a href="https://ibb.co/q7jPvR6"><img src="https://i.ibb.co/QpQ1460/page-screenshot.png" alt="page-screenshot" width="400" border="0"></a>
 
 ### Color coded product availability
 Products are directly listed in table format showing:
