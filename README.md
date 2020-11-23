@@ -53,8 +53,8 @@ Caveat: Searching with availability information takes slightly longer to compute
 #### Search auto-complete
 Each product search input provides a auto-complete dropdown list that updates with the user's input. This allows users to type in partial information and perform quicker look ups.
 
-<a href="https://ibb.co/dG1Q28G"><img src="https://i.ibb.co/ChNn7Rh/search-screenshot-1.png" alt="search-screenshot-1" border="0"></a>
-<a href="https://ibb.co/R6XFm2S"><img src="https://i.ibb.co/rpBjSkt/search-screenshot-2.png" alt="search-screenshot-2" border="0"></a>
+<a href="https://ibb.co/dG1Q28G"><img src="https://i.ibb.co/ChNn7Rh/search-screenshot-1.png" alt="search-screenshot-1" width="400" border="0"></a>
+<a href="https://ibb.co/R6XFm2S"><img src="https://i.ibb.co/rpBjSkt/search-screenshot-2.png" alt="search-screenshot-2" width="400" border="0"></a>
 
 #### Basic price filtering
 In addition to searching for specific prices, basic numeric filtering options are available. Users are able to filter prices based on:
