@@ -21,6 +21,7 @@ Built using:
 ## Features
 ### Easy page selection
 Users can easily switch between product categories at any time with sticky navigation buttons at the top of the page. The highlighted button indicates the current product category that the user is viewing.
+
 <a href="https://i.ibb.co/kmTzn4r"><img src="https://i.ibb.co/kmTzn4r/assignment-screenshot-1.jpg" alt="page-screenshot" width="400" border="0"></a>
 <a href="https://ibb.co/q7jPvR6"><img src="https://i.ibb.co/QpQ1460/page-screenshot.png" alt="page-screenshot" width="400" border="0"></a>
 
@@ -51,6 +52,9 @@ Caveat: Searching with availability information takes slightly longer to compute
 
 #### Search auto-complete
 Each product search input provides a auto-complete dropdown list that updates with the user's input. This allows users to type in partial information and perform quicker look ups.
+
+<a href="https://ibb.co/dG1Q28G"><img src="https://i.ibb.co/ChNn7Rh/search-screenshot-1.png" alt="search-screenshot-1" border="0"></a>
+<a href="https://ibb.co/R6XFm2S"><img src="https://i.ibb.co/rpBjSkt/search-screenshot-2.png" alt="search-screenshot-2" border="0"></a>
 
 #### Basic price filtering
 In addition to searching for specific prices, basic numeric filtering options are available. Users are able to filter prices based on:
