@@ -19,7 +19,19 @@ Built using:
 * Express
 
 ## Features
-###
+### Easy page selection
+
+### Color coded product availability
+
+### Filter and search multiple product info types
+
+#### Search auto-complete
+
+#### Basic price filtering
+
+#### Easily clear searches
+
+### Auto data refresh
 
 ## Project setup
 ```
