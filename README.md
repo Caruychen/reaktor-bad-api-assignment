@@ -20,18 +20,45 @@ Built using:
 
 ## Features
 ### Easy page selection
+Users can easily switch between product categories at any time with sticky navigation buttons at the top of the page. The highlighted button indicates the current product category that the user is viewing.
 
 ### Color coded product availability
+Products are directly listed in table format showing:
+* Name
+* ID
+* Manufacturer
+* Price
+* Color
+* Availability
+
+The availability of a product is indicated with text and background colors: INSTOCK in green, LESSTHAN10 in yellow, and OUTOFSTOCK in red.
+
+### Pagination
+100 products are shown per page. A simple pagination UI is included to show the maximum pages per products, it allows users to easily increment or decrement pages, or directly enter the page number they want to go to.
 
 ### Filter and search multiple product info types
+Users can search for a specific product or group of products by intering information at the top of the product lists. An input box is provided for each category of information, so users can search using multiple information columns or a single column.
+
+Search inputs persist through product category changes, so users can easily and quickly check with the same filters across the categories (jackets, shirts, accessories). For instance, a user can check which jackets from the manufacturer Derp is out of stock, and then easily check the same for shirts and accessories without re-entering the same search input. 
+
+Caveat: Searching with availability information takes slightly longer to compute than for other categories for information. However, the results for current search inputs are cached for a product once it is opened. So subsequent product category switches with the same search inputs load faster. 
 
 #### Search auto-complete
+Each product search input provides a auto-complete dropdown list that updates with the user's input. This allows users to type in partial information and perform quicker look ups.
 
 #### Basic price filtering
+In addition to searching for specific prices, basic numeric filtering options are available. Users are able to filter prices based on:
+* Greater than: >
+* Less than: <
+* Greater than or equal to: >=
+* Less than or equal to: <=
+* Equal to: ==
+* Not equal to: !=
 
-#### Easily clear searches
+Users can also filter with up to 2 conditions using the logical & and | inputs.
 
 ### Auto data refresh
+This app assumes that the availability information may change over the course of a working day. To continuously display up-to-date information, the app refreshes availability information in the background every 5 minutes (accounting for the API's internal cache of 5 minutes). It will automatically render the new availability information without needing to refresh the page.
 
 ## Project setup
 ```
@@ -52,6 +79,3 @@ npm run build
 ```
 npm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
