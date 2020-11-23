@@ -5,7 +5,7 @@ This web application provides a simple product listing UI for warehouse workers 
 It prioritises ease of use by allowing fast and intuitive switching between product categories, 
 and the ability to filter products in a given category using search inputs. 
 
-![App page](https://github.com/Caruychen/reaktor-bad-api-assignment/src/assets/images/assignment_screenshot_1.png?raw=true)
+![App page](https://ibb.co/YWCDhBm)
 
 This app uses 2 API endpoints running at: https://bad-api-assignment.reaktor.com, which is provided by [Reaktor](https://www.reaktor.com "Reaktor"):
 * `GET /products/:category` - returns a list of products in a given category (jackets, shirts, accessories).
