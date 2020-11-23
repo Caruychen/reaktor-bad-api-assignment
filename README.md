@@ -1,5 +1,5 @@
 # API Assignment (Warehouse Listing App)
-link: https://caruy-api-assignment.herokuapp.com
+demo: https://caruy-api-assignment.herokuapp.com
 
 This web application provides a simple product listing UI for warehouse workers at a hypothetical clothing brand.
 It prioritises ease of use by allowing fast and intuitive switching between product categories, 
@@ -68,24 +68,4 @@ In addition to searching for specific prices, basic numeric filtering options ar
 Users can also filter with up to 2 conditions using the logical & and | inputs.
 
 ### Auto data refresh
-This app assumes that the availability information may change over the course of a working day. To continuously display up-to-date information, the app refreshes availability information in the background every 5 minutes (accounting for the API's internal cache of 5 minutes). It will automatically render the new availability information without needing to refresh the page.
-
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
+This app assumes that availability information may change over the course of a working day. To continuously display up-to-date information, the app refreshes availability information in the background every 5 minutes (accounting for the API's internal cache of 5 minutes). It will automatically render the new availability information without needing to refresh the page.
