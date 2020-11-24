@@ -1,4 +1,4 @@
-# API Assignment (Warehouse Listing App)
+# Warehouse Web App (Reaktor API Assignment)
 demo: https://caruy-api-assignment.herokuapp.com
 
 This web application is a simple product listing UI for warehouse workers at a hypothetical clothing brand.
