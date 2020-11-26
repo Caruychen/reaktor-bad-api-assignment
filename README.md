@@ -77,7 +77,10 @@ Once the repository is cloned, install dependencies from root directory with:
 npm install
 ```
 
-To install dependencies for the server environment with the production build, `cd` to the [server](server) directory and run `npm install`.
+To install dependencies for the server environment with the production build, `cd` to the [server](server) directory and run 
+```
+npm install
+```
 
 ### Compiles and hot-reloads VueJS for development
 ```
