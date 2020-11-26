@@ -72,15 +72,12 @@ This app assumes that availability information may change over the course of a w
 
 ## Project Setup
 ### Install dependencies
-Once the repository is cloned, install dependencies from root directory with:
+Install dependencies for development in the root directory with
 ```
 npm install
 ```
 
-To install dependencies for the server environment with the production build, `cd` to the [server](server) directory and run 
-```
-npm install
-```
+Run the same comment to install dependencies for the server environment with the production build, in the [server](server) directory.
 
 ### Compiles and hot-reloads VueJS for development
 ```
