@@ -69,3 +69,30 @@ Users can also filter with up to 2 conditions using the logical & and | inputs.
 
 ### Auto data refresh
 This app assumes that availability information may change over the course of a working day. To continuously display up-to-date information, the app refreshes availability information in the background every 5 minutes (accounting for the API's internal cache of 5 minutes). It will automatically render the new availability information without needing to refresh the page.
+
+## Project Setup
+### Install dependencies
+Once the repository is cloned, install dependencies from root directory with:
+```
+npm install
+```
+
+To install dependencies for the server environment with the production build, `cd` to the [server](server) directory and run `npm install`.
+
+### Compiles and hot-reloads VueJS for development
+```
+npm run serve
+```
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
+Compiles build to the directory [server/public](server/public)
+
+### Comiples and loads production build
+`cd` to [server](server) and run:
+```
+npm run start
+```
